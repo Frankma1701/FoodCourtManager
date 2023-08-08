@@ -53,8 +53,6 @@ rfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/input
 nfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/configuration/BeanConfiguration.java,e\f\eff1882612ef0913d70b4cb97efd8bdf06560228
 ê
 `foodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/usecase/RestaurantUseCase.java,8\0\8036eed620f32bb195f95692f51674851ec75e30
-Å
-Qfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/model/Dish.java,4\6\46437fff1c648ff4571de55aa06028af0b1661dd
 ¶
 vfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/output/jpa/adapter/RestaurantJpaAdapter.java,c\4\c439c5aabf523962dd2e25716fc66d7d55396656
 ë
@@ -65,12 +63,8 @@ efoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/application/dto/resp
 kfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/application/dto/response/RestaurantResponse.java,8\5\852b14680a52164685a953ecda99b8c820ef83e5
 ú
 lfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/input/rest/DishRestController.java,4\1\412a1f2f8a7d6b3c95eaa13073de95bed3e3c25c
-ä
-Zfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/usecase/DishUseCase.java,1\7\1779a44526c18ee39348d1c90df3837312ce482f
 è
 _foodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/spi/IDishPersistencePort.java,f\0\f0cca512d3223e4e110941cccc3dc0ed1546ce68
-õ
-kfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/output/jpa/entity/DishEntity.java,8\9\8972fad73a39885e5b524f305d725ceb572760bb
 ã
 [foodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/api/IDishServicePort.java,b\9\b97baf56085ca72e315b132870ff16be744a3195
 è
