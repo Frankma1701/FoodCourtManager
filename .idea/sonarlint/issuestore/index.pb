@@ -45,8 +45,6 @@ jfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/excep
 zfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/output/jpa/repository/IRestaurantRepository.java,6\c\6c0308777e7fd40d0e1f8fde326dfcc51ab300f0
 §
 tfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/output/jpa/repository/IDishRepository.java,6\1\61cda9249c942665d678cfde827c785722e9bb7c
-¢
-rfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/input/rest/RestaurantRestController.java,e\f\efa7a523023ab9a7636963327c3b3707063edd9a
 û
 nfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/configuration/BeanConfiguration.java,e\f\eff1882612ef0913d70b4cb97efd8bdf06560228
 Å

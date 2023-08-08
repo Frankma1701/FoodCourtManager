@@ -23,6 +23,7 @@ public class RestaurantEntity{
     private Long id;
     @NotNull(message = ConstantsEntity.NOT_NULL_NAME_RESTAURANT)
     @NotBlank(message = ConstantsEntity.NOT_BLANK_NAME_RESTAURANT)
+    @Pattern(regexp = ConstantsEntity.REGEX_NAME_RESTAURANT, message = ConstantsEntity.NO_VALID_NAME_RESTAURANT)
     private String name;
     @NotNull(message = ConstantsEntity.NOT_NULL_NAME_RESTAURANT)
     @NotBlank(message = ConstantsEntity.NOT_BLANK_NAME_RESTAURANT)
