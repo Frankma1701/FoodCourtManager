@@ -9,8 +9,6 @@ Vfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/model/OrderDi
 ffoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/application/handler/IRestaurantHandler.java,c\8\c85eb3cefae2ae34a65dcff87452bbf249d986a9
 ®
 xfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/exception/RestaurantAlreadyExistException.java,4\1\413c89d0d3d9605ecbf08115a2de71043559093d
-á
-Wfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/model/Restaurant.java,3\4\3422ef88eef3e558a4e3e47c138d653b821e8c26
 M
 foodcourtmanager/build.gradle,0\1\015b98747b28a238fc12413acd73172906d44eea
 ã
@@ -51,8 +49,6 @@ tfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/outpu
 rfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/input/rest/RestaurantRestController.java,e\f\efa7a523023ab9a7636963327c3b3707063edd9a
 û
 nfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/configuration/BeanConfiguration.java,e\f\eff1882612ef0913d70b4cb97efd8bdf06560228
-ê
-`foodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/usecase/RestaurantUseCase.java,8\0\8036eed620f32bb195f95692f51674851ec75e30
 Å
 Qfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/model/Dish.java,4\6\46437fff1c648ff4571de55aa06028af0b1661dd
 ¶
