@@ -50,8 +50,10 @@ public class DishHandler implements IDishHandler{
 
     @Override
     public void updateDish(DishUpdateRequest dishUpdateRequest) {
-        iDishServicePort.getDish(dishUpdateRequest.getId());
-        iDishServicePort.updateDish(dishRequestMapper.toDish(dishUpdateRequest));
+        Dish dish = iDishServicePort.getDish(dishUpdateRequest.getId());
+        dish.setDescription(dishUpdateRequest.getDescription());
+        dish.setPrice(dishUpdateRequest.getPrice());
+        iDishServicePort.updateDish(dish);
     }
 
 

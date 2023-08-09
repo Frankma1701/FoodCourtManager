@@ -58,5 +58,20 @@ class DishUseCaseTest{
     }
 
 
+    @Test
+    void updateDish (){
+        dishUseCase.updateDish(expectedUpdateObject);
+        Mockito.verify(iDishPersistencePort).updateDish(expectedUpdateObject);
+    }
 
+    @Test
+    void getAllDishes (){
+        Mockito.when(iDishPersistencePort.getAllDishes()).thenReturn(Arrays.asList(mockObject,mockObject1));
+        Assertions.assertNotNull(dishUseCase.getAllDishes());
+        dishUseCase.saveDish(mockObject);
+        dishUseCase.saveDish(mockObject1);
+        List<Dish> dishList = dishUseCase.getAllDishes();
+        Assertions.assertNotNull(dishList);
+        Assertions.assertEquals(2,dishList.size());
+    }
 }

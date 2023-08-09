@@ -21,6 +21,7 @@ public interface DishResponseMapper{
         return dishList.stream()
                 .map(dish -> {
                     DishResponse dishResponse = new DishResponse();
+                    dishResponse.setId(dish.getId());
                     dishResponse.setName(dish.getName());
                     dishResponse.setCategoryId(dish.getCategoryId());
                     dishResponse.setDescription(dish.getDescription());
