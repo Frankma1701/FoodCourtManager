@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/foodcourtmanager.iml" filepath="$PROJECT_DIR$/.idea/foodcourtmanager.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/foodcourtmanager.foodcourtmanager.main.iml" filepath="$PROJECT_DIR$/.idea/modules/foodcourtmanager.foodcourtmanager.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/foodcourtmanager.foodcourtmanager.test.iml" filepath="$PROJECT_DIR$/.idea/modules/foodcourtmanager.foodcourtmanager.test.iml" />
     </modules>
   </component>
 </project>

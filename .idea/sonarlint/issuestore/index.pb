@@ -13,8 +13,6 @@ M
 foodcourtmanager/build.gradle,0\1\015b98747b28a238fc12413acd73172906d44eea
 ã
 [foodcourtmanager/src/main/java/org/pragma/foodcourtmanager/FoodCourtManagerApplication.java,e\f\ef119cae72ba4bac58617c2c4d8c386787c76481
-ï
-efoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/application/handler/RestaurantHandler.java,9\7\974c7f1b345d11a07f0f12eb23abdb48baeb7c29
 §
 tfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/exception/RestaurantNotFoundException.java,8\9\8958e276fc072357aa8e95e2da768262e488ca2e
 Ç
@@ -49,8 +47,6 @@ tfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/outpu
 nfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/configuration/BeanConfiguration.java,e\f\eff1882612ef0913d70b4cb97efd8bdf06560228
 Å
 Qfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/model/Dish.java,4\6\46437fff1c648ff4571de55aa06028af0b1661dd
-¶
-vfoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/infrastructure/output/jpa/adapter/RestaurantJpaAdapter.java,c\4\c439c5aabf523962dd2e25716fc66d7d55396656
 ë
 afoodcourtmanager/src/main/java/org/pragma/foodcourtmanager/domain/api/IRestaurantServicePort.java,8\0\80b3358c742da1255d34a74077ad8d99a7fd409d
 ï
