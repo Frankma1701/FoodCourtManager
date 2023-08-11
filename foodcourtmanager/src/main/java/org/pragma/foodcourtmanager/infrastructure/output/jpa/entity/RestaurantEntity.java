@@ -28,7 +28,6 @@ public class RestaurantEntity{
     @NotBlank(message = ConstantsEntity.NOT_BLANK_NAME_RESTAURANT)
     private String address;
     @NotNull(message = ConstantsEntity.NOT_NULL_NAME_RESTAURANT)
-    @NotBlank(message = ConstantsEntity.NOT_BLANK_NAME_RESTAURANT)
     private Long ownerId;
     @NotNull(message = ConstantsEntity.NOT_NULL_NAME_RESTAURANT)
     @NotBlank(message = ConstantsEntity.NOT_BLANK_NAME_RESTAURANT)

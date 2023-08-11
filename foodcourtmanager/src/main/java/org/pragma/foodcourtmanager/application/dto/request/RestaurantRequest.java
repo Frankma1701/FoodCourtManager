@@ -8,7 +8,7 @@ public class RestaurantRequest{
 
     private String name;
     private String address;
-    private Long ownerId;
+    private String documentId;
     private String phoneNumber;
     private String logoUrl;
     private String nit;
