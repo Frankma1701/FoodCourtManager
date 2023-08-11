@@ -21,7 +21,8 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort{
 
     @Override
     public Restaurant saveRestaurant(Restaurant restaurant) {
-
+        System.out.println("Los datos del restaurante en el Jpa son : ");
+        System.out.println(restaurant.toString());
         if(iRestaurantRepository.findByNit(restaurant.getNit()).isPresent()){
             throw new RestaurantAlreadyExistException();
         }

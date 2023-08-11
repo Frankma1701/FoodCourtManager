@@ -17,6 +17,5 @@ public interface DishRequestMapper{
 
 
     Dish toDish(DishRequest dishRequest);
-    Dish toDish(DishUpdateRequest dishUpdateRequest);
 
 }

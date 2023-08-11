@@ -16,6 +16,8 @@ public class RestaurantUseCase implements IRestaurantServicePort{
     }
     @Override
     public Restaurant saveRestaurant(Restaurant restaurant) {
+        System.out.println("Los datos del restaurante son : ");
+        System.out.println(restaurant.toString());
         return iRestaurantPersistencePort.saveRestaurant(restaurant);
     }
     @Override

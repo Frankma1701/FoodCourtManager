@@ -25,10 +25,12 @@ public class BeanConfiguration {
     private final IDishRepository iDishRepository;
     private final DishEntityMapper dishEntityMapper;
 
+
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort(){
         return new RestaurantJpaAdapter(iRestaurantRepository,restaurantEntityMapper);
     }
+
 
     @Bean
     public IRestaurantServicePort restaurantServicePort(){
