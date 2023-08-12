@@ -22,8 +22,9 @@ public class DishEntity{
     @NotNull(message = ConstantsEntity.NOT_NULL_NAME_DISH)
     @NotBlank(message = ConstantsEntity.NOT_BLANK_NAME_DISH)
     private String name;
-    @NotNull(message = ConstantsEntity.NOT_NULL_CATEGORY_DISH)
-    private Long categoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn( name = "category_id",foreignKey = @ForeignKey(name = "fk_plate_category"))
+    private CategoryEntity categoryEntity;
     @NotNull(message = ConstantsEntity.NOT_NULL_DESCRIPTION_DISH)
     @NotBlank(message = ConstantsEntity.NOT_BLANK_DESCRIPTION_DISH)
     private String description;
@@ -45,7 +46,6 @@ public class DishEntity{
         return "DishEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", categoryId=" + categoryId +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", imageUrl='" + imageUrl + '\'' +
