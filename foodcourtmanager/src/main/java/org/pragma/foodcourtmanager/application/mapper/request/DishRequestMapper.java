@@ -1,6 +1,7 @@
 package org.pragma.foodcourtmanager.application.mapper.request;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.pragma.foodcourtmanager.application.dto.request.DishRequest;
@@ -16,6 +17,7 @@ import org.pragma.foodcourtmanager.domain.model.Restaurant;
 public interface DishRequestMapper{
 
 
+    @Mapping(target = "restaurantId" , source = "dishRequest.restaurantNit")
     Dish toDish(DishRequest dishRequest);
 
 }
