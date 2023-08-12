@@ -20,13 +20,9 @@ public class ConstantsEntity{
     public static final String REGEX_PHONE_NUMBER_RESTAURANT= "\\+?[0-9]+";
     public static final String NO_VALID_PHONE_NUMBER_RESTAURANT = "El numero de telefono del restaurante no es válido";
     public static final String NO_VALID_NIT_RESTAURANT = "El nit del restaurante no es válido";
-<<<<<<< HEAD
-=======
 
     public static final String NO_VALID_NAME_RESTAURANT = "El nombre del restaurante no es válido";
 
-
->>>>>>> 5a77788267c9b4aade984a0ac2df622735da53e3
     public static final String REGEX_NIT_RESTAURANT = "\\d+";
 
     public static final String REGEX_NAME_RESTAURANT = "^(?=.*[a-zA-Z]).+$";

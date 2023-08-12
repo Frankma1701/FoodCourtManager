@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.pragma.foodcourtmanager.infrastructure.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,6 +30,7 @@ public class SecurityConfiguration{
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers("/user/**","/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/restaurant/").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/dish/").hasRole("OWNER")
                                 .anyRequest().denyAll()
                 );
         return httpSecurity.build();
