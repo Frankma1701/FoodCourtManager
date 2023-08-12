@@ -40,4 +40,17 @@ public class DishEntity{
     @JoinColumn( name = "restaurant_id",foreignKey = @ForeignKey(name = "fk_plate_restaurant"))
     private RestaurantEntity restaurantEntity;
 
+    @Override
+    public String toString (){
+        return "DishEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", categoryId=" + categoryId +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", isActive=" + isActive +
+                ", restaurantEntity=" + restaurantEntity.getId() +
+                '}';
+    }
 }
