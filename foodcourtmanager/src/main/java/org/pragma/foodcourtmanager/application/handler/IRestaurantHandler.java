@@ -12,6 +12,8 @@ public interface IRestaurantHandler{
 
     RestaurantResponse getRestaurant(String documentId);
 
+    RestaurantResponse getRestaurant(Long restaurantId);
+
     void updateRestaurant(RestaurantRequest userRequest);
 
     void deleteRestaurant(String documentId);

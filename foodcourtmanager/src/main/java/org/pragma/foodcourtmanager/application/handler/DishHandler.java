@@ -54,7 +54,6 @@ public class DishHandler implements IDishHandler{
             throw new NotOwnerRestaurantUserException();
 
         }
-
     }
     @Override
     public List<DishResponse> getAllDishes() {
@@ -71,9 +70,28 @@ public class DishHandler implements IDishHandler{
     @Override
     public void updateDish(DishUpdateRequest dishUpdateRequest) {
         Dish dish = iDishServicePort.getDish(dishUpdateRequest.getId());
-        dish.setDescription(dishUpdateRequest.getDescription());
-        dish.setPrice(dishUpdateRequest.getPrice());
-        iDishServicePort.updateDish(dish);
+        System.out.println("Los datos del dish son : " + dish.toString());
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = (String) authentication.getCredentials();
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        Long userId = claims.get("id", Long.class);
+        RestaurantResponse restaurantResponse = restaurantHandler.getRestaurant(dish.getRestaurantId());
+        if(restaurantResponse.getOwnerId() == userId){
+            dish.setDescription(dishUpdateRequest.getDescription());
+            dish.setPrice(dishUpdateRequest.getPrice());
+            System.out.println("Los datos del dish son : " + dish.toString());
+            iDishServicePort.updateDish(dish);
+        }else{
+            throw new NotOwnerRestaurantUserException();
+
+        }
+
     }
 
 }

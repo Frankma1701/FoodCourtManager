@@ -54,6 +54,12 @@ public class RestaurantHandler implements IRestaurantHandler{
     }
 
     @Override
+    public RestaurantResponse getRestaurant (Long restaurantId){
+        Restaurant restaurant = iRestaurantServicePort.getRestaurant(restaurantId);
+        return restaurantResponseMapper.toResponse(restaurant);
+    }
+
+    @Override
     public void updateRestaurant(RestaurantRequest restaurantRequest) {
         Restaurant oldRestaurant = iRestaurantServicePort.getRestaurant(restaurantRequest.getNit());
         Restaurant newRestaurant = restaurantRequestMapper.toRestaurant(restaurantRequest);
