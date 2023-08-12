@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
+<<<<<<< HEAD
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$/../../foodcourtmanager/build/generated/sources/annotationProcessor/java/main">
       <sourceFolder url="file://$MODULE_DIR$/../../foodcourtmanager/build/generated/sources/annotationProcessor/java/main" isTestSource="false" generated="true" />
@@ -7,5 +8,9 @@
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="b54d9852-1340-4721-9eef-0ef640978552" />
+=======
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="c6832711-a32d-43ef-ba14-cd5b023f2bc9" />
+>>>>>>> HU_4_update_dish
   </component>
 </module>

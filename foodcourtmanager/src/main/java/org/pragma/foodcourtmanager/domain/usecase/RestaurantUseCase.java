@@ -28,6 +28,12 @@ public class RestaurantUseCase implements IRestaurantServicePort{
     public Restaurant getRestaurant(String nit) {
         return iRestaurantPersistencePort.getRestaurant(nit);
     }
+
+    @Override
+    public Restaurant getRestaurant (Long restaurantId){
+        return iRestaurantPersistencePort.getRestaurant(restaurantId);
+    }
+
     @Override
     public void updateRestaurant(Restaurant restaurant) {
         iRestaurantPersistencePort.updateRestaurant(restaurant);

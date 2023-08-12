@@ -10,6 +10,8 @@ public interface IRestaurantPersistencePort{
 
     Restaurant getRestaurant(String nit);
 
+    Restaurant getRestaurant(Long restaurantId);
+
     void updateRestaurant(Restaurant restaurant);
 
     void deleteRestaurant(String nit);

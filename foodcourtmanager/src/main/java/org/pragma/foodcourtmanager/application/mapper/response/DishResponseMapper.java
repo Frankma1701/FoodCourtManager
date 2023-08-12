@@ -1,6 +1,7 @@
 package org.pragma.foodcourtmanager.application.mapper.response;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.pragma.foodcourtmanager.application.dto.response.DishResponse;

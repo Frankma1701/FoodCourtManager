@@ -31,8 +31,9 @@ public class SecurityConfiguration{
                                 .requestMatchers("/user/**","/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/restaurant/").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST,"/dish/").hasRole("OWNER")
+                                .requestMatchers(HttpMethod.PUT, "/dish/").hasRole("OWNER")
+                                .anyRequest().denyAll()
 
-                .anyRequest().denyAll()
                 );
         return httpSecurity.build();
     }
