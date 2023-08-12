@@ -15,3 +15,6 @@ springdoc:
   swagger-ui:
     enabled: true
     path: swagger-ui.html
+
+jwt:
+  secret-key: CestL9uDprmHHcnV7VNyFjnUGkAZTqQVYBGdBETbmqwJmt2xgSgy8rG2p65m95F6EG5CQ9TBjCBScLsQJY3XQ2p5yGQEsxGZP7gdLZaKUYTGFgjZEMB7gX3tQaSHQY4GmJCjzSd5dCbdCrNhryP6WvDT5mHrsE2F4f4nHxSPef3jY7LcyT72dqPgxhy5ZEeJEPGNSykQpjCyKNhAS7Vu9mRT2XCshch3FwSjBDwzMK8P2s2UDanLCHarcERhAJ4s

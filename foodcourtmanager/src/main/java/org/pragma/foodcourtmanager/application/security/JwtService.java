@@ -1,4 +1,4 @@
-package org.pragma.foodcourtmanager.infrastructure.security;
+package org.pragma.foodcourtmanager.application.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +19,8 @@ import java.util.function.Function;
 @Service
 public class JwtService{
 
-    //@Value("${jwt.secret.key}")
-    private static final String SECRET_KEY= "CestL9uDprmHHcnV7VNyFjnUGkAZTqQVYBGdBETbmqwJmt2xgSgy8rG2p65m95F6EG5CQ9TBjCBScLsQJY3XQ2p5yGQEsxGZP7gdLZaKUYTGFgjZEMB7gX3tQaSHQY4GmJCjzSd5dCbdCrNhryP6WvDT5mHrsE2F4f4nHxSPef3jY7LcyT72dqPgxhy5ZEeJEPGNSykQpjCyKNhAS7Vu9mRT2XCshch3FwSjBDwzMK8P2s2UDanLCHarcERhAJ4s" ;
-
+    @Value("${jwt.secret-key}")
+    private String SECRET_KEY;
 
     public String extractUsername (String token){
         return extractClaim(token,Claims::getSubject);
@@ -50,6 +50,16 @@ public class JwtService{
     public boolean isTokenValid(String token , @NotNull  UserDetails userDetails){
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
+
+    public Long extractUserIdFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("id", Long.class);
     }
 
     public boolean isTokenExpired(String token){

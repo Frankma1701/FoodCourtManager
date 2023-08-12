@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class RestaurantResponse{
+    private Long id;
     private String name;
     private String address;
     private Long ownerId;
