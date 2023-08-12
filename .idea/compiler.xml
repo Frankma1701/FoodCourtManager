@@ -19,9 +19,6 @@
         <module name="foodcourtmanager.foodcourtmanager.test~1" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="foodcourtmanager.foodcourtmanager.main" target="17" />
-      <module name="foodcourtmanager.foodcourtmanager.test" target="17" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="17" />
   </component>
 </project>

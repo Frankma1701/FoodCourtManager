@@ -9,6 +9,8 @@ import org.pragma.foodcourtmanager.application.mapper.request.RestaurantRequestM
 import org.pragma.foodcourtmanager.application.mapper.response.RestaurantResponseMapper;
 import org.pragma.foodcourtmanager.domain.api.IRestaurantServicePort;
 import org.pragma.foodcourtmanager.domain.model.Restaurant;
+import org.pragma.foodcourtmanager.infrastructure.exception.NotOwnerUserException;
+import org.pragma.foodcourtmanager.infrastructure.exception.RestaurantAlreadyExistException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +35,9 @@ public class RestaurantHandler implements IRestaurantHandler{
             System.out.println("Los datos del restaurante son : ");
             System.out.println(restaurant.toString());
             iRestaurantServicePort.saveRestaurant(restaurant);
+        }else{
+            throw new NotOwnerUserException();
+
         }
 
     }
