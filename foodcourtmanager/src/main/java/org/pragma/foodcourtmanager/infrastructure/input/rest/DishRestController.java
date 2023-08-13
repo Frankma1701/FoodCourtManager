@@ -3,6 +3,7 @@ package org.pragma.foodcourtmanager.infrastructure.input.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.pragma.foodcourtmanager.application.dto.request.DishRequest;
+import org.pragma.foodcourtmanager.application.dto.request.DishStateRequest;
 import org.pragma.foodcourtmanager.application.dto.request.DishUpdateRequest;
 import org.pragma.foodcourtmanager.application.dto.request.RestaurantRequest;
 import org.pragma.foodcourtmanager.application.dto.response.DishResponse;
@@ -43,10 +44,17 @@ public class DishRestController{
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> updateRestaurant(@RequestBody DishUpdateRequest dishUpdateRequest){
+    public ResponseEntity<Void> updateDish(@RequestBody DishUpdateRequest dishUpdateRequest){
         dishHandler.updateDish(dishUpdateRequest);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/change-state")
+    public ResponseEntity<Void> updateStateDish(@RequestBody DishStateRequest dishStateRequest){
+        dishHandler.updateStateDish(dishStateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
 
 
 

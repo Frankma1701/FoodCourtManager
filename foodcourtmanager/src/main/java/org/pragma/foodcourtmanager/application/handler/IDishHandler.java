@@ -1,6 +1,7 @@
 package org.pragma.foodcourtmanager.application.handler;
 
 import org.pragma.foodcourtmanager.application.dto.request.DishRequest;
+import org.pragma.foodcourtmanager.application.dto.request.DishStateRequest;
 import org.pragma.foodcourtmanager.application.dto.request.DishUpdateRequest;
 import org.pragma.foodcourtmanager.application.dto.request.RestaurantRequest;
 import org.pragma.foodcourtmanager.application.dto.response.DishResponse;
@@ -17,6 +18,9 @@ public interface IDishHandler{
 
     //void deleteRestaurant(String nit);
     void updateDish(DishUpdateRequest dishUpdateRequest);
+
+    void updateStateDish(DishStateRequest dishStateRequest);
+
 
     // void deleteRestaurant(String documentId);
 }

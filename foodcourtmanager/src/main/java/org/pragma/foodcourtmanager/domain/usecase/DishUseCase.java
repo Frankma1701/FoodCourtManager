@@ -34,7 +34,6 @@ public class DishUseCase implements IDishServicePort{
 
     @Override
     public void updateDish(Dish dish) {
-        //void deleteRestaurant(String nit);
         iDishPersistencePort.updateDish(dish);
     }
 

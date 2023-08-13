@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.pragma.foodcourtmanager.application.dto.request.DishRequest;
+import org.pragma.foodcourtmanager.application.dto.request.DishStateRequest;
 import org.pragma.foodcourtmanager.application.dto.request.DishUpdateRequest;
 import org.pragma.foodcourtmanager.application.dto.response.DishResponse;
 import org.pragma.foodcourtmanager.application.dto.response.RestaurantResponse;
@@ -33,6 +34,7 @@ public class DishHandler implements IDishHandler{
 
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
+
 
 
     @Override
@@ -69,10 +71,6 @@ public class DishHandler implements IDishHandler{
 
     @Override
     public void updateDish(DishUpdateRequest dishUpdateRequest) {
-        Dish dish = iDishServicePort.getDish(dishUpdateRequest.getId());
-        System.out.println("Los datos del dish son : " + dish.toString());
-
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String token = (String) authentication.getCredentials();
         Claims claims = Jwts.parserBuilder()
@@ -81,6 +79,7 @@ public class DishHandler implements IDishHandler{
                 .parseClaimsJws(token)
                 .getBody();
         Long userId = claims.get("id", Long.class);
+        Dish dish = iDishServicePort.getDish(dishUpdateRequest.getId());
         RestaurantResponse restaurantResponse = restaurantHandler.getRestaurant(dish.getRestaurantId());
         if(restaurantResponse.getOwnerId() == userId){
             dish.setDescription(dishUpdateRequest.getDescription());
@@ -92,6 +91,26 @@ public class DishHandler implements IDishHandler{
 
         }
 
+    }
+
+    @Override
+    public void updateStateDish (DishStateRequest dishStateRequest){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = (String) authentication.getCredentials();
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        Long userId = claims.get("id", Long.class);
+        Dish dish = iDishServicePort.getDish(dishStateRequest.getId());
+        RestaurantResponse restaurantResponse = restaurantHandler.getRestaurant(dish.getRestaurantId());
+        if(restaurantResponse.getOwnerId() == userId){
+            dish.setActive(dishStateRequest.isActive());
+            iDishServicePort.updateDish(dish);
+        }else{
+            throw new NotOwnerRestaurantUserException();
+        }
     }
 
 }
