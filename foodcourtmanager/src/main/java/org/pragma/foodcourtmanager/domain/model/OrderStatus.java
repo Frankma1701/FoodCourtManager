@@ -1,6 +1,4 @@
 package org.pragma.foodcourtmanager.domain.model;
-
 public enum OrderStatus{
-
-    PENDING , WAITING;
+    PENDING , IN_PREPARATION , CANCELED , READY , DELIVERED;
 }

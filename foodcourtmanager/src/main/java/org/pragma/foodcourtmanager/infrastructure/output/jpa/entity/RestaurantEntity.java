@@ -43,5 +43,7 @@ public class RestaurantEntity{
     private String nit;
     @OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurantEntity" , cascade = CascadeType.ALL)
     private List<DishEntity> dishes;
+    @OneToMany(fetch = FetchType.LAZY , mappedBy = "restaurantEntity" , cascade = CascadeType.ALL)
+    private List<OrderEntity> orders;
 
 }

@@ -67,4 +67,16 @@ public class Order {
     public void setRestaurantId (Long restaurantId){
         this.restaurantId = restaurantId;
     }
+
+    @Override
+    public String toString (){
+        return "Order{" +
+                "id=" + id +
+                ", customerId=" + customerId +
+                ", date=" + date +
+                ", orderStatus=" + orderStatus +
+                ", chefId=" + chefId +
+                ", restaurantId=" + restaurantId +
+                '}';
+    }
 }

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.constants.ConstantsEntity;
 
+import java.util.List;
+
 @Entity
 @Table(name = "dish")
 @NoArgsConstructor
@@ -40,7 +42,8 @@ public class DishEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "restaurant_id",foreignKey = @ForeignKey(name = "fk_plate_restaurant"))
     private RestaurantEntity restaurantEntity;
-
+    @OneToMany(fetch = FetchType.LAZY , mappedBy = "dishEntity" , cascade = CascadeType.ALL)
+    private List<OrderDishEntity> orderDishEntities;
     @Override
     public String toString (){
         return "DishEntity{" +
