@@ -9,12 +9,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.pragma.foodcourtmanager.domain.model.Dish;
+import org.pragma.foodcourtmanager.domain.model.Restaurant;
 import org.pragma.foodcourtmanager.domain.spi.IDishPersistencePort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class DishUseCaseTest{
 
@@ -56,15 +61,22 @@ class DishUseCaseTest{
         Assertions.assertEquals(expectedObject.getName(),resultObject.getName(), "Los ids de los platos son iguales");
         Mockito.verify(iDishPersistencePort).getDish(1L);
     }
-
-
     @Test
     void updateDish (){
         dishUseCase.updateDish(expectedUpdateObject);
         Mockito.verify(iDishPersistencePort).updateDish(expectedUpdateObject);
     }
-
     @Test
-    void getAllDishes (){
+    void testGetAllDishes() {
+        Long restaurantId = 1L;
+        Long categoryId = 2L;
+        Pageable pageable = Pageable.ofSize(10).withPage(0);
+        Page<Dish> mockDishPage = mock(Page.class);
+        when(iDishPersistencePort.getAllDishes(eq(restaurantId), eq(categoryId), eq(pageable)))
+                .thenReturn(mockDishPage);
+        Page<Dish> resultDishPage = dishUseCase.getAllDishes(restaurantId, categoryId, pageable);
+        verify(iDishPersistencePort, times(1)).getAllDishes(eq(restaurantId), eq(categoryId), eq(pageable));
+        Assertions.assertEquals(resultDishPage.getTotalElements(), mockDishPage.getTotalElements());
+
     }
 }
