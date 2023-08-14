@@ -6,13 +6,15 @@ import org.pragma.foodcourtmanager.application.dto.request.DishUpdateRequest;
 import org.pragma.foodcourtmanager.application.dto.request.RestaurantRequest;
 import org.pragma.foodcourtmanager.application.dto.response.DishResponse;
 import org.pragma.foodcourtmanager.application.dto.response.RestaurantResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface IDishHandler{
 
     void saveDish(DishRequest dishRequest);
-    List<DishResponse> getAllDishes();
+    Page<DishResponse> getAllDishes(Long restaurantId,Long categoryId, Pageable pageable);
 
     DishResponse getDish(Long id);
 

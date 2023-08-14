@@ -6,8 +6,12 @@ import org.pragma.foodcourtmanager.domain.model.Restaurant;
 import org.pragma.foodcourtmanager.domain.spi.IDishPersistencePort;
 import org.pragma.foodcourtmanager.infrastructure.exception.*;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.DishEntity;
+import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.RestaurantEntity;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.DishEntityMapper;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IDishRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
@@ -24,12 +28,12 @@ public class DishJpaAdapter implements IDishPersistencePort{
     }
 
     @Override
-    public List<Dish> getAllDishes() {
-        List<DishEntity> dishEntityList = iDishRepository.findAll();
-        if(dishEntityList.isEmpty()){
+    public Page<Dish> getAllDishes( Long restaurantId,Long categoryId, Pageable pageable ){
+        Page<DishEntity> dishEntityPage = iDishRepository.findByRestaurantIdAndCategoryId(restaurantId,categoryId,pageable);
+        if(dishEntityPage.isEmpty()){
             throw new NoDataFoundException();
         }
-        return dishEntityMapper.toDishList(dishEntityList);
+        return dishEntityMapper.toDishPage(dishEntityPage);
     }
 
     @Override

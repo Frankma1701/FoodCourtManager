@@ -15,6 +15,8 @@ import org.pragma.foodcourtmanager.domain.api.IDishServicePort;
 import org.pragma.foodcourtmanager.domain.model.Dish;
 import org.pragma.foodcourtmanager.infrastructure.exception.NotOwnerRestaurantUserException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -58,8 +60,8 @@ public class DishHandler implements IDishHandler{
         }
     }
     @Override
-    public List<DishResponse> getAllDishes() {
-        return dishResponseMapper.toResponseList(iDishServicePort.getAllDishes());
+    public Page<DishResponse> getAllDishes(Long restaurantId,Long categoryId, Pageable pageable) {
+        return dishResponseMapper.toResponseList(iDishServicePort.getAllDishes(restaurantId,categoryId, pageable));
     }
 
 

@@ -39,10 +39,7 @@ public class RestaurantRestController{
     ) {
         Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.ASC, "name"));
         Page<RestaurantListResponse> restaurantPage = restaurantHandler.getAllRestaurants(pageable);
-
-
         List<RestaurantListResponse> result = restaurantPage.getContent();
-
         return ResponseEntity.ok(result);
     }
 

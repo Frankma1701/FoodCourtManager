@@ -8,6 +8,8 @@ import org.pragma.foodcourtmanager.domain.model.Dish;
 import org.pragma.foodcourtmanager.domain.model.Restaurant;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.DishEntity;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.RestaurantEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 
@@ -26,8 +28,12 @@ public interface DishEntityMapper{
     @Mapping(target = "categoryId" , source = "dishEntity.categoryEntity.id")
 
     Dish toDish(DishEntity dishEntity);
+    default Page<Dish> toDishPage (Page<DishEntity> dishEntityPage) {
+        List<Dish> dishes = dishEntityPage.stream()
+                .map(this::toDish)
+                .toList();
 
-
-    List<Dish> toDishList(List<DishEntity> dishEntityList);
+        return new PageImpl<>(dishes);
+    }
 
 }
