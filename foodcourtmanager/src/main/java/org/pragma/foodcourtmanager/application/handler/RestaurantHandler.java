@@ -3,6 +3,7 @@ package org.pragma.foodcourtmanager.application.handler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.pragma.foodcourtmanager.application.dto.request.RestaurantRequest;
+import org.pragma.foodcourtmanager.application.dto.response.RestaurantListResponse;
 import org.pragma.foodcourtmanager.application.dto.response.RestaurantResponse;
 import org.pragma.foodcourtmanager.application.dto.response.UserResponse;
 import org.pragma.foodcourtmanager.application.mapper.request.RestaurantRequestMapper;
@@ -11,6 +12,8 @@ import org.pragma.foodcourtmanager.domain.api.IRestaurantServicePort;
 import org.pragma.foodcourtmanager.domain.model.Restaurant;
 import org.pragma.foodcourtmanager.infrastructure.exception.NotOwnerUserException;
 import org.pragma.foodcourtmanager.infrastructure.exception.RestaurantAlreadyExistException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,8 +46,8 @@ public class RestaurantHandler implements IRestaurantHandler{
     }
 
     @Override
-    public List<RestaurantResponse> getAllRestaurants() {
-        return restaurantResponseMapper.toResponseList(iRestaurantServicePort.getAllRestaurants());
+    public Page<RestaurantListResponse> getAllRestaurants(Pageable pageable) {
+        return restaurantResponseMapper.toResponseList(iRestaurantServicePort.getAllRestaurants(pageable));
     }
 
     @Override

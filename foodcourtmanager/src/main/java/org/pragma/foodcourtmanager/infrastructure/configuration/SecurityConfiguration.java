@@ -30,9 +30,11 @@ public class SecurityConfiguration{
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers("/user/**","/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/restaurant/").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST,"/dish/").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.POST,"/dish/").hasRole("OWNER")
                                 .requestMatchers(HttpMethod.PUT, "/dish/").hasRole("OWNER")
-                                .anyRequest().denyAll()
+                        .requestMatchers(HttpMethod.GET, "/restaurant/").hasRole("CUSTOMER")
+
+                        .anyRequest().denyAll()
 
                 );
         return httpSecurity.build();

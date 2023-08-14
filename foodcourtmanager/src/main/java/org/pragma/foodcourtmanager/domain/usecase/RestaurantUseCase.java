@@ -3,6 +3,8 @@ package org.pragma.foodcourtmanager.domain.usecase;
 import org.pragma.foodcourtmanager.domain.api.IRestaurantServicePort;
 import org.pragma.foodcourtmanager.domain.model.Restaurant;
 import org.pragma.foodcourtmanager.domain.spi.IRestaurantPersistencePort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 // Conection with the infrastructure
@@ -21,8 +23,8 @@ public class RestaurantUseCase implements IRestaurantServicePort{
         return iRestaurantPersistencePort.saveRestaurant(restaurant);
     }
     @Override
-    public List<Restaurant> getAllRestaurants() {
-        return iRestaurantPersistencePort.getAllRestaurants();
+    public Page<Restaurant> getAllRestaurants(Pageable pageable) {
+        return iRestaurantPersistencePort.getAllRestaurants(pageable);
     }
     @Override
     public Restaurant getRestaurant(String nit) {

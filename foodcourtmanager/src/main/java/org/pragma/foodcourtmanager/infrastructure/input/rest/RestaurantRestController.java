@@ -3,10 +3,15 @@ package org.pragma.foodcourtmanager.infrastructure.input.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.pragma.foodcourtmanager.application.dto.request.RestaurantRequest;
+import org.pragma.foodcourtmanager.application.dto.response.RestaurantListResponse;
 import org.pragma.foodcourtmanager.application.dto.response.RestaurantResponse;
 import org.pragma.foodcourtmanager.application.dto.response.UserResponse;
 import org.pragma.foodcourtmanager.application.handler.RestaurantHandler;
 import org.pragma.foodcourtmanager.application.handler.UserHandler;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +33,17 @@ public class RestaurantRestController{
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<RestaurantResponse>> getAllRestaurants(){
-        return ResponseEntity.ok(restaurantHandler.getAllRestaurants());
+    public ResponseEntity<List<RestaurantListResponse>> getAllRestaurants(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size,  Sort.by(Sort.Direction.ASC, "name"));
+        Page<RestaurantListResponse> restaurantPage = restaurantHandler.getAllRestaurants(pageable);
 
+
+        List<RestaurantListResponse> result = restaurantPage.getContent();
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{nit}")

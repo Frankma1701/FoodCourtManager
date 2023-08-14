@@ -10,11 +10,18 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.pragma.foodcourtmanager.domain.model.Restaurant;
 import org.pragma.foodcourtmanager.domain.spi.IRestaurantPersistencePort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class RestaurantUseCaseTest{
     @Mock
@@ -39,43 +46,42 @@ class RestaurantUseCaseTest{
 
     @Test
     void saveRestaurant (){
-        Mockito.when(iRestaurantPersistencePort.saveRestaurant(mockObject)).thenReturn(mockObject);
+        when(iRestaurantPersistencePort.saveRestaurant(mockObject)).thenReturn(mockObject);
         Restaurant resultObject = restaurantUseCase.saveRestaurant(mockObject);
         Assertions.assertEquals(expectedObject.getId(),resultObject.getId(), "Los ids de los restaurantes son iguales");
         Assertions.assertEquals(expectedObject.getName(),resultObject.getName(), "Los nombres de los restaurantes son iguales");
-        Mockito.verify(iRestaurantPersistencePort).saveRestaurant(mockObject);
+        verify(iRestaurantPersistencePort).saveRestaurant(mockObject);
     }
 
     @Test
-    void getAllRestaurants (){
-        Mockito.when(iRestaurantPersistencePort.getAllRestaurants()).thenReturn(Arrays.asList(mockObject,mockObject1));
-        Assertions.assertNotNull(restaurantUseCase.getAllRestaurants());
-        restaurantUseCase.saveRestaurant(mockObject);
-        restaurantUseCase.saveRestaurant(mockObject1);
-        List<Restaurant> userList = restaurantUseCase.getAllRestaurants();
-        Assertions.assertNotNull(userList);
-        Assertions.assertEquals(2,userList.size());
+    void testGetAllRestaurants() {
+        Pageable pageable = Pageable.ofSize(10).withPage(0); // Example pageable
+        Page<Restaurant> mockRestaurantPage = Mockito.mock(Page.class);
+        when(iRestaurantPersistencePort.getAllRestaurants(pageable)).thenReturn(mockRestaurantPage);
+        Page<Restaurant> result = restaurantUseCase.getAllRestaurants(pageable);
+        Assertions.assertEquals(result.getTotalElements(), mockRestaurantPage.getTotalElements());
+        verify(iRestaurantPersistencePort).getAllRestaurants(pageable);
     }
 
     @Test
     void getRestaurant (){
-        Mockito.when(iRestaurantPersistencePort.getRestaurant("001")).thenReturn(mockObject);
+        when(iRestaurantPersistencePort.getRestaurant("001")).thenReturn(mockObject);
         Restaurant resultObject = restaurantUseCase.getRestaurant("001");
         Assertions.assertEquals(expectedObject.getId(),resultObject.getId(), "Los ids de los restaurantes son iguales");
         Assertions.assertEquals(expectedObject.getName(),resultObject.getName(), "Los nombres de los restaurantes son iguales");
-        Mockito.verify(iRestaurantPersistencePort).getRestaurant("001");
+        verify(iRestaurantPersistencePort).getRestaurant("001");
     }
 
     @Test
     void updateRestaurant (){
         restaurantUseCase.updateRestaurant(expectedUpdateObject);
-        Mockito.verify(iRestaurantPersistencePort).updateRestaurant(expectedUpdateObject);
+        verify(iRestaurantPersistencePort).updateRestaurant(expectedUpdateObject);
     }
 
     @Test
     void deleteRestaurant (){
         String nit = "123";
         restaurantUseCase.deleteRestaurant(nit);
-        Mockito.verify(iRestaurantPersistencePort).deleteRestaurant(nit);
+        verify(iRestaurantPersistencePort).deleteRestaurant(nit);
     }
 }

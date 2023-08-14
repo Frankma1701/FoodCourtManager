@@ -9,6 +9,8 @@ import org.pragma.foodcourtmanager.infrastructure.exception.RestaurantNotFoundEx
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.RestaurantEntity;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.RestaurantEntityMapper;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IRestaurantRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -31,12 +33,12 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort{
     }
 
     @Override
-    public List<Restaurant> getAllRestaurants() {
-        List<RestaurantEntity> restaurantEntityList = iRestaurantRepository.findAll();
-        if(restaurantEntityList.isEmpty()){
+    public Page<Restaurant> getAllRestaurants(Pageable pageable) {
+        Page<RestaurantEntity> restaurantEntityPage = iRestaurantRepository.findAll(pageable);
+        if(restaurantEntityPage.isEmpty()){
             throw new NoDataFoundException();
         }
-        return restaurantEntityMapper.toRestaurantList(restaurantEntityList);
+        return restaurantEntityMapper.toRestaurantPage(restaurantEntityPage);
     }
 
     @Override
