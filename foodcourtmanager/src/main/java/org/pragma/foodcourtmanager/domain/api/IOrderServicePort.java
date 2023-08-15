@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface IOrderServicePort{
 
+    Order saveOrder (Order order);
+
     void saveCompleteOrder(Order order , List<OrderDish> orderDishList);
 
+    List<Order> getOrdersByCustomerId (Long userId);
 }

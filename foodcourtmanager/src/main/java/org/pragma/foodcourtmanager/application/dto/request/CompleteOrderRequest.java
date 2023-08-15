@@ -10,7 +10,6 @@ import java.util.List;
 public class CompleteOrderRequest{
     private Long restaurantId;
     private List<OrderDishRequest> dishes;
-    private Long customerId;
     private Long chefId;
 
     @Override
@@ -18,7 +17,6 @@ public class CompleteOrderRequest{
         return "CompleteOrderRequest{" +
                 "restaurantId=" + restaurantId +
                 ", dishes=" + dishes +
-                ", customerId=" + customerId +
                 ", chefId=" + chefId +
                 '}';
     }

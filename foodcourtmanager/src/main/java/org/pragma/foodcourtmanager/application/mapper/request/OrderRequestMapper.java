@@ -19,7 +19,6 @@ public interface OrderRequestMapper{
     @Mapping(target = "chefId" , source = "orderRequest.chefId")
     Order toOrder(OrderRequest orderRequest);
 
-    @Mapping(target = "customerId" , source = "completeOrderRequest.customerId")
     @Mapping(target = "chefId" , source = "completeOrderRequest.chefId")
     Order toOrder(CompleteOrderRequest completeOrderRequest);
 

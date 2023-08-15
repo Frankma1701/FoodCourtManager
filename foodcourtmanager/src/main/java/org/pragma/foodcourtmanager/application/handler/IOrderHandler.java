@@ -10,5 +10,8 @@ public interface IOrderHandler{
 
      Order saveOrder(OrderRequest orderRequest);
 
-     void saveCompleteOrder(CompleteOrderRequest completeOrderRequest);
+     boolean hasPendingOrders(Long userId);
+
+
+          void saveCompleteOrder(CompleteOrderRequest completeOrderRequest);
 }

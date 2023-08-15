@@ -13,12 +13,18 @@ public class OrderUseCase implements IOrderServicePort{
     public OrderUseCase (IOrderPersistencePort iOrderPersistencePort) {
         this.iOrderPersistencePort = iOrderPersistencePort;
     }
-
+    @Override
+    public Order saveOrder(Order order) {
+        return iOrderPersistencePort.saveOrder(order);
+    }
     @Override
     public void saveCompleteOrder (Order order, List<OrderDish> orderDishList){
          iOrderPersistencePort.saveCompleteOrder(order,orderDishList);
-    };
+    }
 
-
+    @Override
+    public List<Order> getOrdersByCustomerId (Long userId){
+        return iOrderPersistencePort.getOrdersByCustomerId(userId);
+    }
 
 }

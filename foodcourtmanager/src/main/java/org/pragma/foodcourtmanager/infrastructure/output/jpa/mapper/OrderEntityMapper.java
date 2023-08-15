@@ -23,5 +23,4 @@ public interface OrderEntityMapper{
 
     @Mapping(target = "restaurantId" , source = "orderEntity.restaurantEntity.id")
     Order toOrder(OrderEntity orderEntity);
-
 }

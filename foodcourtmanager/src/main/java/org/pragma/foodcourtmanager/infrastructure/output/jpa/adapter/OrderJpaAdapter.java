@@ -20,6 +20,7 @@ import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IOrderRe
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -40,8 +41,16 @@ public class OrderJpaAdapter implements IOrderPersistencePort{
     public void saveCompleteOrder(Order order , List<OrderDish> orderDishList){
         iOrderRepository.save(orderEntityMapper.toEntity(order));
         orderDishList.forEach(orderDish -> iOrderDishRepository.save(orderDishEntityMapper.toEntity(orderDish)));
-    };
+    }
 
-
-
+    @Override
+    public List<Order> getOrdersByCustomerId (Long userId){
+        List<OrderEntity> userOrdersEntity = iOrderRepository.getOrdersByCustomerId(userId);
+        List<Order> userOrders = new ArrayList<>();
+        for (OrderEntity orderEntity : userOrdersEntity) {
+            Order order = orderEntityMapper.toOrder(orderEntity);
+            userOrders.add(order);
+        }
+        return userOrders;
+    }
 }

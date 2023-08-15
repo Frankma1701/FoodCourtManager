@@ -13,6 +13,9 @@ public interface IOrderPersistencePort{
 
     void saveCompleteOrder(Order order , List<OrderDish> orderDishList);
 
+     List<Order> getOrdersByCustomerId (Long userId);
 
 
-}
+
+
+    }
