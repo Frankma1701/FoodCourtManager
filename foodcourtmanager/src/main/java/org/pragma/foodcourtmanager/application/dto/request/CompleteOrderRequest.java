@@ -10,14 +10,14 @@ import java.util.List;
 public class CompleteOrderRequest{
     private Long restaurantId;
     private List<OrderDishRequest> dishes;
-    private Long chefId;
+    //private Long employeeId;
 
     @Override
     public String toString (){
         return "CompleteOrderRequest{" +
                 "restaurantId=" + restaurantId +
                 ", dishes=" + dishes +
-                ", chefId=" + chefId +
+               // ", employeeId=" + employeeId +
                 '}';
     }
 }

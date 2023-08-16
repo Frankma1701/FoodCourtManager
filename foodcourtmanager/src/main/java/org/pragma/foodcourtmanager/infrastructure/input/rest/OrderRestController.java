@@ -2,8 +2,11 @@ package org.pragma.foodcourtmanager.infrastructure.input.rest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.pragma.foodcourtmanager.application.dto.request.CompleteOrderRequest;
+import org.pragma.foodcourtmanager.application.dto.request.DishRequest;
 import org.pragma.foodcourtmanager.application.dto.request.OrderRequest;
+import org.pragma.foodcourtmanager.application.dto.request.OrderUpdateRequest;
 import org.pragma.foodcourtmanager.application.dto.response.CompleteOrderResponse;
+import org.pragma.foodcourtmanager.application.dto.response.OrderResponse;
 import org.pragma.foodcourtmanager.application.dto.response.RestaurantListResponse;
 import org.pragma.foodcourtmanager.application.handler.OrderHandler;
 import org.pragma.foodcourtmanager.domain.model.OrderStatus;
@@ -39,6 +42,27 @@ public class OrderRestController{
         Page<CompleteOrderResponse> completeOrderResponses = orderHandler.getAllOrders(orderStatus, pageable);
         List<CompleteOrderResponse> result = completeOrderResponses.getContent();
         return ResponseEntity.ok(result);
+    }
 
+    @PutMapping("/")
+    public ResponseEntity<List<CompleteOrderResponse>> assignOrder (
+            @RequestBody OrderUpdateRequest orderUpdateRequest,
+            @RequestParam OrderStatus orderStatus,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size){
+        orderHandler.assignOrder(orderUpdateRequest);
+        //return ResponseEntity.noContent().build();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CompleteOrderResponse> completeOrderResponses = orderHandler.getAllOrders(orderStatus, pageable);
+        List<CompleteOrderResponse> result = completeOrderResponses.getContent();
+
+        return ResponseEntity.ok(result);
+
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponse> getOrder (
+            @PathVariable(name = "orderId") Long orderId){
+        return ResponseEntity.ok(orderHandler.getOrder(orderId));
     }
 }

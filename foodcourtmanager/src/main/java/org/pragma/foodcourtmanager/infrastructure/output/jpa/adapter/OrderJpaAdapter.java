@@ -28,11 +28,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort{
 
     @Override
     public Order saveOrder(Order order) {
+        order.setEmployeeId(0L);
+        order.setVerificationCode("");
         return orderEntityMapper.toOrder(iOrderRepository.save(orderEntityMapper.toEntity(order)));
     }
 
     @Override
     public void saveCompleteOrder(Order order , List<OrderDish> orderDishList){
+        order.setEmployeeId(0L);
+        order.setVerificationCode("");
         iOrderRepository.save(orderEntityMapper.toEntity(order));
         orderDishList.forEach(orderDish -> iOrderDishRepository.save(orderDishEntityMapper.toEntity(orderDish)));
     }
@@ -47,6 +51,18 @@ public class OrderJpaAdapter implements IOrderPersistencePort{
         }
         return userOrders;
     }
+
+    @Override
+    public void assignOrder (Order order){
+        System.out.println("La order a actualizar es " + order.toString());
+        iOrderRepository.save(orderEntityMapper.toEntity(order));
+    }
+
+    @Override
+    public Order getOrder (Long orderId){
+        return  orderEntityMapper.toOrder(iOrderRepository.getReferenceById(orderId));
+    }
+
 
     @Override
     public Page<Order> getAllOrders ( Long restaurantId,OrderStatus orderStatus , Pageable pageable){

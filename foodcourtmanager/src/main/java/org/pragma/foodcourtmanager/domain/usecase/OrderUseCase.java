@@ -31,6 +31,16 @@ public class OrderUseCase implements IOrderServicePort{
     }
 
     @Override
+    public void assignOrder (Order order){
+        iOrderPersistencePort.assignOrder(order);
+    }
+
+    @Override
+    public Order getOrder (Long orderId){
+        return iOrderPersistencePort.getOrder(orderId);
+    }
+
+    @Override
     public Page<Order> getAllOrders(Long restaurantId, OrderStatus orderStatus, Pageable pageable){
         return iOrderPersistencePort.getAllOrders(restaurantId,orderStatus, pageable);
     }

@@ -13,13 +13,16 @@ import java.util.List;
 public interface IOrderPersistencePort{
     Order saveOrder (Order order);
 
-    void saveCompleteOrder(Order order , List<OrderDish> orderDishList);
+    void saveCompleteOrder (Order order, List<OrderDish> orderDishList);
 
-     List<Order> getOrdersByCustomerId (Long userId);
+    List<Order> getOrdersByCustomerId (Long userId);
 
-    Page<Order> getAllOrders(Long employeeId, OrderStatus orderStatus , Pageable pageable);
+    void assignOrder (Order order);
+
+    Order getOrder (Long orderId);
 
 
+    Page<Order> getAllOrders (Long employeeId, OrderStatus orderStatus, Pageable pageable);
 
 
-    }
+}

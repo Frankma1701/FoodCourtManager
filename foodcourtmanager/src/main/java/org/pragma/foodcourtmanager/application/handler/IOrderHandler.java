@@ -3,6 +3,7 @@ package org.pragma.foodcourtmanager.application.handler;
 import org.pragma.foodcourtmanager.application.dto.request.*;
 import org.pragma.foodcourtmanager.application.dto.response.CompleteOrderResponse;
 import org.pragma.foodcourtmanager.application.dto.response.DishResponse;
+import org.pragma.foodcourtmanager.application.dto.response.OrderResponse;
 import org.pragma.foodcourtmanager.domain.model.Order;
 import org.pragma.foodcourtmanager.domain.model.OrderStatus;
 import org.springframework.data.domain.Page;
@@ -14,8 +15,12 @@ public interface IOrderHandler{
 
      boolean hasPendingOrders (Long userId);
 
+      void assignOrder (OrderUpdateRequest orderUpdateRequest);
 
-     void saveCompleteOrder (CompleteOrderRequest completeOrderRequest);
+    OrderResponse getOrder (Long orderId);
+
+
+    void saveCompleteOrder (CompleteOrderRequest completeOrderRequest);
 
      Page<CompleteOrderResponse> getAllOrders (OrderStatus orderStatus, Pageable pageable);
 }

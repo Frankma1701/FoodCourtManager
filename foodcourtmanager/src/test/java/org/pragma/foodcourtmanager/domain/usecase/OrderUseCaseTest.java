@@ -44,7 +44,7 @@ public class OrderUseCaseTest {
         assertEquals(expectedObject.getCustomerId(),resultObject.getCustomerId(), ConstantsTests.CUSTOMER_ID_ORDER_EQUAL);
         assertEquals(expectedObject.getDate(),resultObject.getDate(), ConstantsTests.DATE_ORDER_EQUAL);
         assertEquals(expectedObject.getOrderStatus(),resultObject.getOrderStatus(), ConstantsTests.ORDER_STATUS_EQUAL);
-        assertEquals(expectedObject.getChefId(),resultObject.getChefId(), ConstantsTests.CHEF_ID_ORDER_EQUAL);
+        assertEquals(expectedObject.getEmployeeId(),resultObject.getEmployeeId(), ConstantsTests.CHEF_ID_ORDER_EQUAL);
         assertEquals(expectedObject.getRestaurantId(),resultObject.getRestaurantId(), ConstantsTests.RESTAURANT_ID_ORDER_EQUAL);
         verify(orderPersistencePort, times(1)).saveOrder(expectedObject);
     }
@@ -68,5 +68,29 @@ public class OrderUseCaseTest {
         Page<Order> result = orderUseCase.getAllOrders(restaurantId, orderStatus, pageable);
         verify(orderPersistencePort, times(1)).getAllOrders(restaurantId, orderStatus, pageable);
         Assertions.assertEquals(result.getTotalElements(), mockOrderList.getTotalElements());
+    }
+
+
+    @Test
+    public void testGetOrder() {
+        Long orderId = 1L;
+        Order expectedObject = FactoryOrder.mockObject;
+        when(orderPersistencePort.getOrder(orderId)).thenReturn(expectedObject);
+        Order resultObject = orderUseCase.getOrder(orderId);
+        assertEquals(expectedObject, resultObject);
+        assertEquals(expectedObject.getId(),resultObject.getId(), ConstantsTests.CHEF_ID_ORDER_EQUAL);
+        assertEquals(expectedObject.getCustomerId(),resultObject.getCustomerId(), ConstantsTests.CUSTOMER_ID_ORDER_EQUAL);
+        assertEquals(expectedObject.getDate(),resultObject.getDate(), ConstantsTests.DATE_ORDER_EQUAL);
+        assertEquals(expectedObject.getOrderStatus(),resultObject.getOrderStatus(), ConstantsTests.ORDER_STATUS_EQUAL);
+        assertEquals(expectedObject.getEmployeeId(),resultObject.getEmployeeId(), ConstantsTests.CHEF_ID_ORDER_EQUAL);
+        assertEquals(expectedObject.getRestaurantId(),resultObject.getRestaurantId(), ConstantsTests.RESTAURANT_ID_ORDER_EQUAL);
+        verify(orderPersistencePort).getOrder(orderId);
+    }
+
+    @Test
+    public void testAssignOrder() {
+        Order orderToAssign = FactoryOrder.mockObject;
+        orderUseCase.assignOrder(orderToAssign);
+        verify(orderPersistencePort).assignOrder(orderToAssign);
     }
 }

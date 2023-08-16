@@ -33,7 +33,8 @@ public class SecurityConfiguration{
                         .requestMatchers(HttpMethod.POST, "/dish/").hasRole("OWNER")
                         .requestMatchers(HttpMethod.GET, "/dish/").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/order/").hasRole("CUSTOMER")
-                        .requestMatchers(HttpMethod.GET , "/order/**").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET , "/order/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT , "/order/").hasRole("EMPLOYEE")
                         .requestMatchers("/employee-restaurant/**" ).permitAll()
 
                         // .requestMatchers("/employee-restaurant/**" ).hasRole("EMPLOYEE")

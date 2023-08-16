@@ -1,18 +1,15 @@
 package org.pragma.foodcourtmanager.infrastructure.output.jpa.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.pragma.foodcourtmanager.domain.model.OrderStatus;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "order_food")
-@NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 public class OrderEntity{
@@ -24,7 +21,10 @@ public class OrderEntity{
     private LocalDate date;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    private Long chefId;
+    @Column(columnDefinition = "bigint default 0")
+    private Long employeeId;
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String verificationCode;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "restaurant_id",foreignKey = @ForeignKey(name = "fk_order_restaurant"))
     private RestaurantEntity restaurantEntity;
@@ -38,7 +38,7 @@ public class OrderEntity{
                 ", customerId=" + customerId +
                 ", date=" + date +
                 ", orderStatus=" + orderStatus +
-                ", chefId=" + chefId +
+                ", employeeId=" + employeeId +
                 ", restaurantEntity=" + restaurantEntity +
                 ", orderDishEntities=" + orderDishEntities +
                 '}';

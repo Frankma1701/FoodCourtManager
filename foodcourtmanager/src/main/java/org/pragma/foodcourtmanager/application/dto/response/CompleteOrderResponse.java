@@ -13,7 +13,7 @@ public class CompleteOrderResponse{
     private Long restaurantId;
     private String restaurantName;
     private List<OrderDishResponse> dishes;
-    private Long chefId;
+    private Long employeeId;
     private Long customerId;
     private OrderStatus orderStatus;
     private String documentIdCustomer;

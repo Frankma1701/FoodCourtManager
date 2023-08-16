@@ -8,16 +8,19 @@ public class Order {
     private Long customerId;
     private LocalDate date;
     private OrderStatus orderStatus;
-    private Long chefId;
+    private Long employeeId;
     private Long restaurantId;
 
-    public Order (Long id, Long customerId, LocalDate date, OrderStatus orderStatus, Long chefId, Long restaurantId){
+    private String verificationCode;
+
+    public Order (Long id, Long customerId, LocalDate date, OrderStatus orderStatus, Long employeeId, Long restaurantId, String verificationCode){
         this.id = id;
         this.customerId = customerId;
         this.date = date;
         this.orderStatus = orderStatus;
-        this.chefId = chefId;
+        this.employeeId = employeeId;
         this.restaurantId = restaurantId;
+        this.verificationCode = verificationCode;
     }
 
     public Long getId (){
@@ -52,12 +55,12 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public Long getChefId (){
-        return chefId;
+    public Long getEmployeeId (){
+        return employeeId;
     }
 
-    public void setChefId (Long chefId){
-        this.chefId = chefId;
+    public void setEmployeeId (Long employeeId){
+        this.employeeId = employeeId;
     }
 
     public Long getRestaurantId (){
@@ -68,6 +71,14 @@ public class Order {
         this.restaurantId = restaurantId;
     }
 
+    public String getVerificationCode (){
+        return verificationCode;
+    }
+
+    public void setVerificationCode (String verificationCode){
+        this.verificationCode = verificationCode;
+    }
+
     @Override
     public String toString (){
         return "Order{" +
@@ -75,8 +86,9 @@ public class Order {
                 ", customerId=" + customerId +
                 ", date=" + date +
                 ", orderStatus=" + orderStatus +
-                ", chefId=" + chefId +
+                ", employeeId=" + employeeId +
                 ", restaurantId=" + restaurantId +
+                ", verificationCode='" + verificationCode + '\'' +
                 '}';
     }
 }

@@ -1,4 +1,5 @@
 package org.pragma.foodcourtmanager.domain.api;
+
 import org.pragma.foodcourtmanager.application.dto.response.CompleteOrderResponse;
 import org.pragma.foodcourtmanager.domain.model.Dish;
 import org.pragma.foodcourtmanager.domain.model.Order;
@@ -13,12 +14,15 @@ public interface IOrderServicePort{
 
     Order saveOrder (Order order);
 
-    void saveCompleteOrder(Order order , List<OrderDish> orderDishList);
+    void saveCompleteOrder (Order order, List<OrderDish> orderDishList);
 
     List<Order> getOrdersByCustomerId (Long userId);
 
-   // List<Order> getOrdersByChefId(Long chefId);
+    // List<Order> getOrdersByChefId(Long chefId);
+    void assignOrder (Order order);
 
-   Page<Order> getAllOrders(Long employeeId, OrderStatus orderStatus, Pageable pageable);
+    Order getOrder (Long orderId);
 
-    }
+    Page<Order> getAllOrders (Long employeeId, OrderStatus orderStatus, Pageable pageable);
+
+}

@@ -5,20 +5,19 @@ import io.jsonwebtoken.Jwts;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.event.spi.SaveOrUpdateEvent;
-import org.pragma.foodcourtmanager.application.dto.request.CompleteOrderRequest;
-import org.pragma.foodcourtmanager.application.dto.request.OrderDishRequest;
-import org.pragma.foodcourtmanager.application.dto.request.OrderRequest;
-import org.pragma.foodcourtmanager.application.dto.request.RestaurantRequest;
+import org.pragma.foodcourtmanager.application.dto.request.*;
 import org.pragma.foodcourtmanager.application.dto.response.*;
 import org.pragma.foodcourtmanager.application.mapper.request.OrderDishRequestMapper;
 import org.pragma.foodcourtmanager.application.mapper.request.OrderRequestMapper;
 import org.pragma.foodcourtmanager.application.mapper.request.RestaurantRequestMapper;
+import org.pragma.foodcourtmanager.application.mapper.response.OrderResponseMapper;
 import org.pragma.foodcourtmanager.application.mapper.response.RestaurantResponseMapper;
 import org.pragma.foodcourtmanager.domain.api.IOrderDishServicePort;
 import org.pragma.foodcourtmanager.domain.api.IOrderServicePort;
 import org.pragma.foodcourtmanager.domain.api.IRestaurantServicePort;
 import org.pragma.foodcourtmanager.domain.model.*;
 import org.pragma.foodcourtmanager.infrastructure.exception.ActiveOrderException;
+import org.pragma.foodcourtmanager.infrastructure.exception.NotOwnerRestaurantUserException;
 import org.pragma.foodcourtmanager.infrastructure.exception.NotOwnerUserException;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.EmployeeRestaurantEntity;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +38,8 @@ import java.util.List;
 public class OrderHandler implements IOrderHandler{
     private final IOrderServicePort iOrderServicePort;
     private final OrderRequestMapper orderRequestMapper;
+    private final OrderResponseMapper orderResponseMapper;
+
     private final IOrderDishServicePort iOrderDishServicePort;
     private final OrderDishRequestMapper orderDishRequestMapper;
 
@@ -49,7 +50,6 @@ public class OrderHandler implements IOrderHandler{
     private final EmployeeRestaurantHandler employeeRestaurantHandler;
 
 
-
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
 
@@ -57,6 +57,27 @@ public class OrderHandler implements IOrderHandler{
     @Override
     public Order saveOrder (OrderRequest orderRequest){
         return iOrderServicePort.saveOrder(orderRequestMapper.toOrder(orderRequest));
+    }
+
+    @Override
+    public void assignOrder (OrderUpdateRequest orderUpdateRequest){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+         String token = (String) authentication.getCredentials();
+         Claims claims = Jwts.parserBuilder()
+         .setSigningKey(SECRET_KEY)
+         .build()
+         .parseClaimsJws(token)
+         .getBody();
+         Long userId = claims.get("id", Long.class);
+        Order order = iOrderServicePort.getOrder(orderUpdateRequest.getOrderId());
+        order.setOrderStatus(OrderStatus.IN_PREPARATION);
+        order.setEmployeeId(userId);
+        iOrderServicePort.assignOrder(order);
+    }
+
+    @Override
+    public OrderResponse getOrder (Long orderId){
+        return orderResponseMapper.toResponse(iOrderServicePort.getOrder(orderId));
     }
 
     public boolean hasPendingOrders (Long userId){
@@ -72,23 +93,19 @@ public class OrderHandler implements IOrderHandler{
         return false;
     }
 
-    public List<OrderDishResponse> getPlatosForOrder(Long orderId) {
-        System.out.println("El orderId que llega " + orderId);
+
+    public List<OrderDishResponse> getPlatosForOrder (Long orderId){
         List<OrderDishResponse> dishOrderList = new ArrayList<>();
         List<OrderDishResponse> orderDishResponsesList = orderDishHandler.getAllOrderDish(orderId);
-        System.out.println("Las lista que llega al OrderHandler de Response");
-        orderDishResponsesList.forEach(orderDishResponse -> System.out.println(orderDishResponse.toString()));
-
         if (orderDishResponsesList != null) {
             for (OrderDishResponse orderDishResponse : orderDishResponsesList) {
-                DishResponse dishResponse  = dishHandler.getDish(orderDishResponse.getDishId());
+                DishResponse dishResponse = dishHandler.getDish(orderDishResponse.getDishId());
                 orderDishResponse.setDishId(dishResponse.getId());
                 orderDishResponse.setDescription(dishResponse.getDescription());
                 orderDishResponse.setName(dishResponse.getName());
                 orderDishResponse.setCategoryId(dishResponse.getCategoryId());
                 orderDishResponse.setPrice(dishResponse.getPrice());
                 orderDishResponse.setImageUrl(dishResponse.getImageUrl());
-                System.out.println("El isActive es " + dishResponse.isActive());
                 orderDishResponse.setIsActive(dishResponse.isActive());
                 orderDishResponse.setQuantity(orderDishResponse.getQuantity());
                 dishOrderList.add(orderDishResponse);
@@ -100,8 +117,7 @@ public class OrderHandler implements IOrderHandler{
 
 
     @Override
-    public Page<CompleteOrderResponse> getAllOrders (OrderStatus orderStatus , Pageable pageable){
-
+    public Page<CompleteOrderResponse> getAllOrders (OrderStatus orderStatus, Pageable pageable){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String token = (String) authentication.getCredentials();
         Claims claims = Jwts.parserBuilder()
@@ -110,25 +126,17 @@ public class OrderHandler implements IOrderHandler{
                 .parseClaimsJws(token)
                 .getBody();
         Long userId = claims.get("id", Long.class);
-        System.out.println("El userId es " + userId);
-        EmployeeRestaurantResponse employeeRestaurant = employeeRestaurantHandler.getEmployeeRestaurant(userId);
-        System.out.println("El employeeRestaurant response es " + employeeRestaurant.toString());
         Long restaurantId = employeeRestaurantHandler.getEmployeeRestaurant(userId).getRestaurantId();
-        System.out.println("El restaurantId es " + restaurantId);
-        Page<Order> orders = iOrderServicePort.getAllOrders(restaurantId,orderStatus,pageable);
-
-        System.out.println("Las orders en Handler");
-        orders.forEach(order -> System.out.println(order.toString()));
-
+        Page<Order> orders = iOrderServicePort.getAllOrders(restaurantId, orderStatus, pageable);
         List<CompleteOrderResponse> modifiedOrderResponses = new ArrayList<>();
         for (Order order : orders) {
             CompleteOrderResponse response = orderRequestMapper.toResponse(order);
-            RestaurantResponse restaurant  = restaurantHandler.getRestaurant(response.getRestaurantId());
+            RestaurantResponse restaurant = restaurantHandler.getRestaurant(response.getRestaurantId());
             UserResponse userResponse = userHandler.getUser(response.getCustomerId());
             response.setRestaurantName(restaurant.getName());
             response.setDocumentIdCustomer(userResponse.getDocumentId());
             response.setDishes(this.getPlatosForOrder(order.getId()));
-            response.setFullNameCustomer(userResponse.getName() +" "+ userResponse.getLastName());
+            response.setFullNameCustomer(userResponse.getName() + " " + userResponse.getLastName());
             modifiedOrderResponses.add(response);
         }
         return new PageImpl<>(modifiedOrderResponses, pageable, orders.getTotalElements());

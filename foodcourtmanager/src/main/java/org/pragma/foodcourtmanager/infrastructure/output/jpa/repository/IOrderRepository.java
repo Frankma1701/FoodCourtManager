@@ -17,10 +17,7 @@ public interface IOrderRepository extends JpaRepository<OrderEntity,Long> {
     @Query("SELECT o FROM OrderEntity o WHERE o.restaurantEntity.id = :restaurantId AND o.orderStatus = :orderStatus")
     Page<OrderEntity> getOrdersByRestaurantIdId(Long restaurantId, OrderStatus orderStatus, Pageable pageable);
 
-    @Query("SELECT o FROM OrderEntity o WHERE o.chefId = :employeeId")
-    List<OrderEntity> getOrdersByEmployeeId(Long employeeId);
-
-
-
+    //@Query("SELECT o FROM OrderEntity o WHERE o.chefId = :employeeId")
+    //List<OrderEntity> getOrdersByEmployeeId(Long employeeId);
 
 }

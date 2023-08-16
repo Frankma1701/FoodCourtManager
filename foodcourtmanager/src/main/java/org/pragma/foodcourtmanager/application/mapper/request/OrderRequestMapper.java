@@ -6,6 +6,7 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.pragma.foodcourtmanager.application.dto.request.CompleteOrderRequest;
 import org.pragma.foodcourtmanager.application.dto.request.OrderRequest;
+import org.pragma.foodcourtmanager.application.dto.request.OrderUpdateRequest;
 import org.pragma.foodcourtmanager.application.dto.response.CompleteOrderResponse;
 import org.pragma.foodcourtmanager.application.dto.response.OrderDishResponse;
 import org.pragma.foodcourtmanager.application.dto.response.RestaurantListResponse;
@@ -23,11 +24,16 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface OrderRequestMapper{
-    @Mapping(target = "chefId" , source = "orderRequest.chefId")
+    // @Mapping(target = "employeeId" , source = "orderRequest.employeeId")
     Order toOrder(OrderRequest orderRequest);
 
-    @Mapping(target = "chefId" , source = "completeOrderRequest.chefId")
+    // @Mapping(target = "employeeId" , source = "completeOrderRequest.employeeId")
     Order toOrder(CompleteOrderRequest completeOrderRequest);
+
+    Order toOrder(OrderUpdateRequest orderUpdateRequest);
+
+    OrderUpdateRequest toOrder(Order order);
+
 
     CompleteOrderResponse toResponse(Order order);
 
@@ -37,7 +43,7 @@ public interface OrderRequestMapper{
         List<CompleteOrderResponse> completeOrderResponseList = orderPage.getContent().stream()
                 .map(order -> {
                     CompleteOrderResponse completeOrderResponse = new CompleteOrderResponse();
-                    completeOrderResponse.setChefId(order.getChefId());
+                    completeOrderResponse.setEmployeeId(order.getEmployeeId());
                     completeOrderResponse.setRestaurantId(order.getRestaurantId());
                     completeOrderResponse.setCustomerId(order.getCustomerId());
                     return completeOrderResponse;
