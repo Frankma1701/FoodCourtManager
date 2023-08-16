@@ -30,7 +30,6 @@ public class DishEntity{
     @NotNull(message = ConstantsEntity.NOT_NULL_DESCRIPTION_DISH)
     @NotBlank(message = ConstantsEntity.NOT_BLANK_DESCRIPTION_DISH)
     private String description;
-    @NotNull(message = ConstantsEntity.NOT_NULL_PRICE_DISH)
     @Digits(integer = 10, fraction = 0, message = ConstantsEntity.INTEGER_PRICE_DISH)
     @Positive(message = ConstantsEntity.NOT_ZERO_PRICE_DISH)
     private Double price;

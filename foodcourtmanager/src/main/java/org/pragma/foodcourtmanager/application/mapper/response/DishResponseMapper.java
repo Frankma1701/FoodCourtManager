@@ -34,7 +34,7 @@ public interface DishResponseMapper{
                     dishResponse.setDescription(dish.getDescription());
                     dishResponse.setRestaurantId(dish.getRestaurantId());
                     dishResponse.setImageUrl(dish.getImageUrl());
-                    dishResponse.setIsActive(dish.getActive());
+                    dishResponse.setActive(dish.getActive());
                     return dishResponse;
                 })
                 .toList();

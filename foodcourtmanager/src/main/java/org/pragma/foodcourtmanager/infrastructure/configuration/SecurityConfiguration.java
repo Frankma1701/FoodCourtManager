@@ -21,20 +21,25 @@ public class SecurityConfiguration{
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
         //noinspection removal
         httpSecurity.cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/user/**","/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/restaurant/").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST,"/dish/").hasRole("OWNER")
-                                .requestMatchers(HttpMethod.GET,"/dish/").hasRole("CUSTOMER")
-                                .requestMatchers(HttpMethod.POST,"/order/").hasRole("CUSTOMER")
-                                .requestMatchers(HttpMethod.PUT, "/dish/").hasRole("OWNER")
-                                .requestMatchers(HttpMethod.GET, "/restaurant/").hasRole("CUSTOMER")
+                        .requestMatchers("/user/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/restaurant/").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/dish/").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.GET, "/dish/").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/order/").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.GET , "/order/**").hasRole("EMPLOYEE")
+                        .requestMatchers("/employee-restaurant/**" ).permitAll()
+
+                        // .requestMatchers("/employee-restaurant/**" ).hasRole("EMPLOYEE")
+
+                        .requestMatchers(HttpMethod.PUT, "/dish/").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.GET, "/restaurant/").hasRole("CUSTOMER")
                         .anyRequest().denyAll()
                 );
         return httpSecurity.build();

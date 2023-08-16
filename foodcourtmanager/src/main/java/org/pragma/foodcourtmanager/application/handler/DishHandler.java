@@ -64,7 +64,6 @@ public class DishHandler implements IDishHandler{
         return dishResponseMapper.toResponseList(iDishServicePort.getAllDishes(restaurantId,categoryId, pageable));
     }
 
-
     @Override
     public DishResponse getDish(Long id) {
         return dishResponseMapper.toResponse(iDishServicePort.getDish(id));

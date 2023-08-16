@@ -12,4 +12,7 @@ public interface IUserFeignClient{
 
     @GetMapping(value = "/user/{documentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     UserResponse getUser(@PathVariable("documentId") String documentId);
+
+    @GetMapping(value = "/user/find/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    UserResponse getUserById(@PathVariable("id") Long id);
 }

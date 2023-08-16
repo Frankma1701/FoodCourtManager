@@ -1,30 +1,12 @@
 package org.pragma.foodcourtmanager.infrastructure.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.pragma.foodcourtmanager.domain.api.IDishServicePort;
-import org.pragma.foodcourtmanager.domain.api.IOrderDishServicePort;
-import org.pragma.foodcourtmanager.domain.api.IOrderServicePort;
-import org.pragma.foodcourtmanager.domain.api.IRestaurantServicePort;
-import org.pragma.foodcourtmanager.domain.spi.IDishPersistencePort;
-import org.pragma.foodcourtmanager.domain.spi.IOrderDishPersistencePort;
-import org.pragma.foodcourtmanager.domain.spi.IOrderPersistencePort;
-import org.pragma.foodcourtmanager.domain.spi.IRestaurantPersistencePort;
-import org.pragma.foodcourtmanager.domain.usecase.DishUseCase;
-import org.pragma.foodcourtmanager.domain.usecase.OrderDishUseCase;
-import org.pragma.foodcourtmanager.domain.usecase.OrderUseCase;
-import org.pragma.foodcourtmanager.domain.usecase.RestaurantUseCase;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter.DishJpaAdapter;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter.OrderDishJpaAdapter;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter.OrderJpaAdapter;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter.RestaurantJpaAdapter;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.DishEntityMapper;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.OrderDishEntityMapper;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.OrderEntityMapper;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.RestaurantEntityMapper;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IDishRepository;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IOrderDishRepository;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IOrderRepository;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IRestaurantRepository;
+import org.pragma.foodcourtmanager.domain.api.*;
+import org.pragma.foodcourtmanager.domain.spi.*;
+import org.pragma.foodcourtmanager.domain.usecase.*;
+import org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter.*;
+import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.*;
+import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,6 +24,9 @@ public class BeanConfiguration {
 
     private final IOrderDishRepository iOrderDishRepository;
     private final OrderDishEntityMapper orderDishEntityMapper;
+
+    private final IEmployeeRestaurantRepository iEmployeeRestaurantRepository;
+    private final EmployeeRestaurantEntityMapper employeeRestaurantEntityMapper;
 
 
     @Bean
@@ -81,4 +66,12 @@ public class BeanConfiguration {
         return new OrderDishUseCase(orderDishPersistencePort());
     }
 
+    @Bean
+    public IEmployeeRestaurntPersistencePort employeeRestaurantPersistencePort(){
+        return new EmployeeRestaurantJpaAdapter(iEmployeeRestaurantRepository,employeeRestaurantEntityMapper);
+    }
+    @Bean
+    public IEmployeeRestaurantServicePort employeeRestaurantServicePort(){
+        return new EmployeeRestaurantUseCase(employeeRestaurantPersistencePort());
+    }
 }

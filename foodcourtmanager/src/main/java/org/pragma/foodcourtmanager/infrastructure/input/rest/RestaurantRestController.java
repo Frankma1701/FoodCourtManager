@@ -32,6 +32,7 @@ public class RestaurantRestController{
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+
     @GetMapping("/")
     public ResponseEntity<List<RestaurantListResponse>> getAllRestaurants(
             @RequestParam(defaultValue = "0") int page,

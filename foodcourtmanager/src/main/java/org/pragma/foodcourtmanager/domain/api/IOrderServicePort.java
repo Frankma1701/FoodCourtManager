@@ -1,7 +1,9 @@
 package org.pragma.foodcourtmanager.domain.api;
+import org.pragma.foodcourtmanager.application.dto.response.CompleteOrderResponse;
 import org.pragma.foodcourtmanager.domain.model.Dish;
 import org.pragma.foodcourtmanager.domain.model.Order;
 import org.pragma.foodcourtmanager.domain.model.OrderDish;
+import org.pragma.foodcourtmanager.domain.model.OrderStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,4 +16,9 @@ public interface IOrderServicePort{
     void saveCompleteOrder(Order order , List<OrderDish> orderDishList);
 
     List<Order> getOrdersByCustomerId (Long userId);
-}
+
+   // List<Order> getOrdersByChefId(Long chefId);
+
+   Page<Order> getAllOrders(Long employeeId, OrderStatus orderStatus, Pageable pageable);
+
+    }

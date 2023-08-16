@@ -1,20 +1,14 @@
 package org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
-import org.pragma.foodcourtmanager.domain.model.Dish;
 import org.pragma.foodcourtmanager.domain.model.Order;
 import org.pragma.foodcourtmanager.domain.model.OrderDish;
-import org.pragma.foodcourtmanager.domain.spi.IDishPersistencePort;
+import org.pragma.foodcourtmanager.domain.model.OrderStatus;
 import org.pragma.foodcourtmanager.domain.spi.IOrderPersistencePort;
-import org.pragma.foodcourtmanager.infrastructure.exception.DishNotFoundException;
-import org.pragma.foodcourtmanager.infrastructure.exception.NoDataFoundException;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.DishEntity;
+import org.pragma.foodcourtmanager.infrastructure.exception.NoDataOrderFoundException;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.OrderEntity;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.DishEntityMapper;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.OrderDishEntityMapper;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.OrderEntityMapper;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IDishRepository;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IOrderDishRepository;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IOrderRepository;
 import org.springframework.data.domain.Page;
@@ -53,4 +47,14 @@ public class OrderJpaAdapter implements IOrderPersistencePort{
         }
         return userOrders;
     }
+
+    @Override
+    public Page<Order> getAllOrders ( Long restaurantId,OrderStatus orderStatus , Pageable pageable){
+        Page<OrderEntity> orderEntityPage = iOrderRepository.getOrdersByRestaurantIdId(1L,orderStatus, pageable);
+
+        orderEntityPage.forEach(orderEntity -> System.out.println(orderEntity.toString()));
+        if(orderEntityPage.isEmpty()){
+            throw new NoDataOrderFoundException();
+        }
+        return orderEntityMapper.toOrderPage(orderEntityPage);    }
 }

@@ -14,6 +14,6 @@ public class DishResponse{
     private Double price;
     private Long restaurantId;
     private String imageUrl;
-    private Boolean isActive;
+    private boolean isActive;
 
 }

@@ -5,6 +5,7 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.pragma.foodcourtmanager.application.dto.request.OrderDishRequest;
 import org.pragma.foodcourtmanager.application.dto.request.OrderRequest;
+import org.pragma.foodcourtmanager.application.dto.response.OrderDishResponse;
 import org.pragma.foodcourtmanager.domain.model.Order;
 import org.pragma.foodcourtmanager.domain.model.OrderDish;
 
@@ -19,4 +20,7 @@ public interface OrderDishRequestMapper{
 
 
     List<OrderDish> toOrderDishList(List<OrderDishRequest> orderDishRequestList);
+
+    List<OrderDishResponse> toResponseList(List<OrderDish> orderDishList);
+
 }

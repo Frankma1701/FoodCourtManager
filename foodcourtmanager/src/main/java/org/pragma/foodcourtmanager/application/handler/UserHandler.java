@@ -12,4 +12,8 @@ public class UserHandler{
     public UserResponse getUserFromApi (String documentId){
         return iUserFeignClient.getUser(documentId);
     }
+
+    public UserResponse getUser (Long id){
+        return iUserFeignClient.getUserById(id);
+    }
 }
