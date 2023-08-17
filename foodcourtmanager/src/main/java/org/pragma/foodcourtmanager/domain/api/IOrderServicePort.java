@@ -21,6 +21,9 @@ public interface IOrderServicePort{
     // List<Order> getOrdersByChefId(Long chefId);
     void assignOrder (Order order);
 
+    void orderReady (Order order);
+
+
     Order getOrder (Long orderId);
 
     Page<Order> getAllOrders (Long employeeId, OrderStatus orderStatus, Pageable pageable);

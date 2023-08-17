@@ -19,6 +19,9 @@ public interface IOrderPersistencePort{
 
     void assignOrder (Order order);
 
+    void orderReady (Order order);
+
+
     Order getOrder (Long orderId);
 
 

@@ -93,7 +93,8 @@ public class OrderHandler implements IOrderHandler{
         order.setOrderStatus(OrderStatus.READY);
         UserResponse userResponse = userHandler.getUser(order.getCustomerId());
         String pin = GeneratorPin.generateSecurityPin(4);
-        MessageRequest messageRequest = new MessageRequest(userResponse.getEmail(),pin);
+        MessageRequest messageRequest = new MessageRequest(userResponse.getCellPhoneNumber(),"Tu pedido esta listo , puedes reclamarlo con el siguiente código " + pin);
+        System.out.println("El message request es " + messageRequest.toString());
         order.setVerificationCode(pin);
         messageHandler.sendMessage(messageRequest);
         iOrderServicePort.assignOrder(order);

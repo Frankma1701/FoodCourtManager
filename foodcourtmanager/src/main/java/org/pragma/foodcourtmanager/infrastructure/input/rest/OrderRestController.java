@@ -57,7 +57,13 @@ public class OrderRestController{
         List<CompleteOrderResponse> result = completeOrderResponses.getContent();
 
         return ResponseEntity.ok(result);
+    }
 
+    @PutMapping("/order-ready")
+    public ResponseEntity<String> orderReady (
+            @RequestBody OrderUpdateRequest orderUpdateRequest){
+        orderHandler.orderReady(orderUpdateRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{orderId}")

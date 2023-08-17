@@ -36,6 +36,12 @@ public class OrderUseCase implements IOrderServicePort{
     }
 
     @Override
+    public void orderReady (Order order){
+        iOrderPersistencePort.orderReady(order);
+
+    }
+
+    @Override
     public Order getOrder (Long orderId){
         return iOrderPersistencePort.getOrder(orderId);
     }
