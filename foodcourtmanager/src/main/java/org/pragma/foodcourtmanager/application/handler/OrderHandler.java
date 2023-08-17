@@ -12,6 +12,7 @@ import org.pragma.foodcourtmanager.application.mapper.request.OrderRequestMapper
 import org.pragma.foodcourtmanager.application.mapper.request.RestaurantRequestMapper;
 import org.pragma.foodcourtmanager.application.mapper.response.OrderResponseMapper;
 import org.pragma.foodcourtmanager.application.mapper.response.RestaurantResponseMapper;
+import org.pragma.foodcourtmanager.application.util.GeneratorPin;
 import org.pragma.foodcourtmanager.domain.api.IOrderDishServicePort;
 import org.pragma.foodcourtmanager.domain.api.IOrderServicePort;
 import org.pragma.foodcourtmanager.domain.api.IRestaurantServicePort;
@@ -45,6 +46,8 @@ public class OrderHandler implements IOrderHandler{
 
     private final RestaurantHandler restaurantHandler;
     private final UserHandler userHandler;
+    private final MessageHandler messageHandler;
+
     private final OrderDishHandler orderDishHandler;
     private final DishHandler dishHandler;
     private final EmployeeRestaurantHandler employeeRestaurantHandler;
@@ -72,6 +75,27 @@ public class OrderHandler implements IOrderHandler{
         Order order = iOrderServicePort.getOrder(orderUpdateRequest.getOrderId());
         order.setOrderStatus(OrderStatus.IN_PREPARATION);
         order.setEmployeeId(userId);
+        iOrderServicePort.assignOrder(order);
+    }
+
+
+    @Override
+    public void orderReady (OrderUpdateRequest orderUpdateRequest){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = (String) authentication.getCredentials();
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        Long userId = claims.get("id", Long.class);
+        Order order = iOrderServicePort.getOrder(orderUpdateRequest.getOrderId());
+        order.setOrderStatus(OrderStatus.READY);
+        UserResponse userResponse = userHandler.getUser(order.getCustomerId());
+        String pin = GeneratorPin.generateSecurityPin(4);
+        MessageRequest messageRequest = new MessageRequest(userResponse.getEmail(),pin);
+        order.setVerificationCode(pin);
+        messageHandler.sendMessage(messageRequest);
         iOrderServicePort.assignOrder(order);
     }
 

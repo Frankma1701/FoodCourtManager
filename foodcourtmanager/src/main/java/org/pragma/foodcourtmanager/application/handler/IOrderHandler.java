@@ -17,6 +17,9 @@ public interface IOrderHandler{
 
       void assignOrder (OrderUpdateRequest orderUpdateRequest);
 
+    void orderReady (OrderUpdateRequest orderUpdateRequest);
+
+
     OrderResponse getOrder (Long orderId);
 
 
