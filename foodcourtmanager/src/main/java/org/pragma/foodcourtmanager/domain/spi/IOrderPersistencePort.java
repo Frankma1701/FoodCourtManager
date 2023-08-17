@@ -24,6 +24,7 @@ public interface IOrderPersistencePort{
 
     void deliverOrder (Order order);
 
+    void cancelOrder (Order order);
 
     Order getOrder (Long orderId);
 

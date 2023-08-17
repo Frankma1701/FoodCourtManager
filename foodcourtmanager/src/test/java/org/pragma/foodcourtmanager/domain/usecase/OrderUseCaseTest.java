@@ -100,4 +100,11 @@ public class OrderUseCaseTest {
         orderUseCase.deliverOrder(orderToDelivery);
         verify(orderPersistencePort).deliverOrder(orderToDelivery);
     }
+
+    @Test
+    void cancelOrder (){
+        Order orderToCancel = FactoryOrder.mockObject;
+        orderUseCase.cancelOrder(orderToCancel);
+        verify(orderPersistencePort).cancelOrder(orderToCancel);
+    }
 }

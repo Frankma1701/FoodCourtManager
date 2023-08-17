@@ -3,6 +3,7 @@ package org.pragma.foodcourtmanager.application.handler;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.pragma.foodcourtmanager.application.dto.request.*;
 import org.pragma.foodcourtmanager.application.dto.response.*;
 import org.pragma.foodcourtmanager.application.mapper.request.OrderDishRequestMapper;
@@ -55,14 +56,7 @@ public class OrderHandler implements IOrderHandler{
 
     @Override
     public void assignOrder (OrderUpdateRequest orderUpdateRequest){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-         String token = (String) authentication.getCredentials();
-         Claims claims = Jwts.parserBuilder()
-         .setSigningKey(SECRET_KEY)
-         .build()
-         .parseClaimsJws(token)
-         .getBody();
-         Long userId = claims.get("id", Long.class);
+        Long userId = this.getUserIdAuthenticate();
         Order order = iOrderServicePort.getOrder(orderUpdateRequest.getOrderId());
         order.setOrderStatus(OrderStatus.IN_PREPARATION);
         order.setEmployeeId(userId);
@@ -75,40 +69,39 @@ public class OrderHandler implements IOrderHandler{
         Long userId = this.getUserIdAuthenticate();
         Order order = iOrderServicePort.getOrder(orderUpdateRequest.getOrderId());
         EmployeeRestaurantResponse employeeRestaurantResponse = employeeRestaurantHandler.getEmployeeRestaurant(userId);
-        if(order.getRestaurantId() == employeeRestaurantResponse.getRestaurantId()) {
+        if (order.getRestaurantId() == employeeRestaurantResponse.getRestaurantId()) {
             order.setOrderStatus(OrderStatus.READY);
             UserResponse userResponse = userHandler.getUser(order.getCustomerId());
             String pin = GeneratorPin.generateSecurityPin(4);
             MessageRequest messageRequest = new MessageRequest(userResponse.getCellPhoneNumber(), "Tu pedido esta listo , puedes reclamarlo con el siguiente código " + pin);
-            System.out.println("El message request es " + messageRequest.toString());
             order.setVerificationCode(pin);
             messageHandler.sendMessage(messageRequest);
             iOrderServicePort.assignOrder(order);
-        }else{
+        } else {
             throw new RuntimeException("El empleado no pertenece al resturante y por tanto no puede cambiar el estado del pedido");
         }
     }
 
-    private Long getUserIdAuthenticate (){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String token = (String) authentication.getCredentials();
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        Long userId = claims.get("id", Long.class);
-        return userId;
-    }
 
     @Override
     public void deliverOrder (OrderValidatePinRequest orderValidatePinRequest){
         Order order = iOrderServicePort.getOrder(orderValidatePinRequest.getOrderId());
-        if(order.getVerificationCode().equals(orderValidatePinRequest.getPin()) && order.getOrderStatus() == OrderStatus.READY){
+        if (order.getVerificationCode().equals(orderValidatePinRequest.getPin()) && order.getOrderStatus() == OrderStatus.READY) {
             order.setOrderStatus(OrderStatus.DELIVERED);
             iOrderServicePort.assignOrder(order);
-        }else{
+        } else {
             throw new RuntimeException("El pin del pedido es incorrecto y no se puede entregar el mismo o aun no esta listo ");
+        }
+    }
+
+    @Override
+    public void cancelOrder (OrderUpdateRequest orderUpdateRequest){
+        Order order = iOrderServicePort.getOrder(orderUpdateRequest.getOrderId());
+        if(order.getOrderStatus() == OrderStatus.PENDING){
+            order.setOrderStatus(OrderStatus.CANCELED);
+            iOrderServicePort.assignOrder(order);
+        }else{
+            throw new RuntimeException("Lo sentimos, tu pedido ya está en preparación y no puede cancelarse");
         }
     }
 
@@ -191,5 +184,18 @@ public class OrderHandler implements IOrderHandler{
         } else {
             throw new ActiveOrderException();
         }
+    }
+
+
+    private Long getUserIdAuthenticate (){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = (String) authentication.getCredentials();
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        Long userId = claims.get("id", Long.class);
+        return userId;
     }
 }

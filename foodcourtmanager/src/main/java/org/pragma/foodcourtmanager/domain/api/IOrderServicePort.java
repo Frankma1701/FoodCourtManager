@@ -25,6 +25,8 @@ public interface IOrderServicePort{
 
     void deliverOrder (Order order);
 
+    void cancelOrder (Order order);
+
     Order getOrder (Long orderId);
 
     Page<Order> getAllOrders (Long employeeId, OrderStatus orderStatus, Pageable pageable);

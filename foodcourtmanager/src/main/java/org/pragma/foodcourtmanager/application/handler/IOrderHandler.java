@@ -20,6 +20,7 @@ public interface IOrderHandler{
     void orderReady (OrderUpdateRequest orderUpdateRequest);
    void deliverOrder (OrderValidatePinRequest orderValidatePinRequest);
 
+    void cancelOrder (OrderUpdateRequest orderUpdateRequest);
 
 
     OrderResponse getOrder (Long orderId);

@@ -70,6 +70,13 @@ public class OrderRestController{
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/cancel-order")
+    public ResponseEntity<String> cancelOrder (
+            @RequestBody OrderUpdateRequest orderUpdateRequest){
+        orderHandler.cancelOrder(orderUpdateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrder (
             @PathVariable(name = "orderId") Long orderId){

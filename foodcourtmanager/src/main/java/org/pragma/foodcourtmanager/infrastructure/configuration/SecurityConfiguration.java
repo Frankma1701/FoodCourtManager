@@ -37,6 +37,7 @@ public class SecurityConfiguration{
                         .requestMatchers(HttpMethod.PUT , "/order/").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.PUT , "/order/order-ready").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.PUT , "/order/delivery-order").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.PUT , "/order/cancel-order").hasRole("EMPLOYEE")
 
                         .requestMatchers("/employee-restaurant/**" ).permitAll()
 
