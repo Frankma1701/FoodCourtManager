@@ -93,4 +93,11 @@ public class OrderUseCaseTest {
         orderUseCase.assignOrder(orderToAssign);
         verify(orderPersistencePort).assignOrder(orderToAssign);
     }
+
+    @Test
+    void deliverOrder (){
+        Order orderToDelivery = FactoryOrder.mockObjectPin;
+        orderUseCase.deliverOrder(orderToDelivery);
+        verify(orderPersistencePort).deliverOrder(orderToDelivery);
+    }
 }

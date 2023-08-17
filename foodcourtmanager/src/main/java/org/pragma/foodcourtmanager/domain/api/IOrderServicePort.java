@@ -23,6 +23,7 @@ public interface IOrderServicePort{
 
     void orderReady (Order order);
 
+    void deliverOrder (Order order);
 
     Order getOrder (Long orderId);
 

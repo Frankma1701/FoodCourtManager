@@ -2,30 +2,21 @@ package org.pragma.foodcourtmanager.application.handler;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.pragma.foodcourtmanager.application.dto.request.*;
 import org.pragma.foodcourtmanager.application.dto.response.*;
 import org.pragma.foodcourtmanager.application.mapper.request.OrderDishRequestMapper;
 import org.pragma.foodcourtmanager.application.mapper.request.OrderRequestMapper;
-import org.pragma.foodcourtmanager.application.mapper.request.RestaurantRequestMapper;
 import org.pragma.foodcourtmanager.application.mapper.response.OrderResponseMapper;
-import org.pragma.foodcourtmanager.application.mapper.response.RestaurantResponseMapper;
 import org.pragma.foodcourtmanager.application.util.GeneratorPin;
 import org.pragma.foodcourtmanager.domain.api.IOrderDishServicePort;
 import org.pragma.foodcourtmanager.domain.api.IOrderServicePort;
-import org.pragma.foodcourtmanager.domain.api.IRestaurantServicePort;
 import org.pragma.foodcourtmanager.domain.model.*;
 import org.pragma.foodcourtmanager.infrastructure.exception.ActiveOrderException;
-import org.pragma.foodcourtmanager.infrastructure.exception.NotOwnerRestaurantUserException;
-import org.pragma.foodcourtmanager.infrastructure.exception.NotOwnerUserException;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.EmployeeRestaurantEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -81,6 +72,24 @@ public class OrderHandler implements IOrderHandler{
 
     @Override
     public void orderReady (OrderUpdateRequest orderUpdateRequest){
+        Long userId = this.getUserIdAuthenticate();
+        Order order = iOrderServicePort.getOrder(orderUpdateRequest.getOrderId());
+        EmployeeRestaurantResponse employeeRestaurantResponse = employeeRestaurantHandler.getEmployeeRestaurant(userId);
+        if(order.getRestaurantId() == employeeRestaurantResponse.getRestaurantId()) {
+            order.setOrderStatus(OrderStatus.READY);
+            UserResponse userResponse = userHandler.getUser(order.getCustomerId());
+            String pin = GeneratorPin.generateSecurityPin(4);
+            MessageRequest messageRequest = new MessageRequest(userResponse.getCellPhoneNumber(), "Tu pedido esta listo , puedes reclamarlo con el siguiente código " + pin);
+            System.out.println("El message request es " + messageRequest.toString());
+            order.setVerificationCode(pin);
+            messageHandler.sendMessage(messageRequest);
+            iOrderServicePort.assignOrder(order);
+        }else{
+            throw new RuntimeException("El empleado no pertenece al resturante y por tanto no puede cambiar el estado del pedido");
+        }
+    }
+
+    private Long getUserIdAuthenticate (){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String token = (String) authentication.getCredentials();
         Claims claims = Jwts.parserBuilder()
@@ -89,15 +98,18 @@ public class OrderHandler implements IOrderHandler{
                 .parseClaimsJws(token)
                 .getBody();
         Long userId = claims.get("id", Long.class);
-        Order order = iOrderServicePort.getOrder(orderUpdateRequest.getOrderId());
-        order.setOrderStatus(OrderStatus.READY);
-        UserResponse userResponse = userHandler.getUser(order.getCustomerId());
-        String pin = GeneratorPin.generateSecurityPin(4);
-        MessageRequest messageRequest = new MessageRequest(userResponse.getCellPhoneNumber(),"Tu pedido esta listo , puedes reclamarlo con el siguiente código " + pin);
-        System.out.println("El message request es " + messageRequest.toString());
-        order.setVerificationCode(pin);
-        messageHandler.sendMessage(messageRequest);
-        iOrderServicePort.assignOrder(order);
+        return userId;
+    }
+
+    @Override
+    public void deliverOrder (OrderValidatePinRequest orderValidatePinRequest){
+        Order order = iOrderServicePort.getOrder(orderValidatePinRequest.getOrderId());
+        if(order.getVerificationCode().equals(orderValidatePinRequest.getPin()) && order.getOrderStatus() == OrderStatus.READY){
+            order.setOrderStatus(OrderStatus.DELIVERED);
+            iOrderServicePort.assignOrder(order);
+        }else{
+            throw new RuntimeException("El pin del pedido es incorrecto y no se puede entregar el mismo o aun no esta listo ");
+        }
     }
 
     @Override
@@ -143,14 +155,7 @@ public class OrderHandler implements IOrderHandler{
 
     @Override
     public Page<CompleteOrderResponse> getAllOrders (OrderStatus orderStatus, Pageable pageable){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String token = (String) authentication.getCredentials();
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        Long userId = claims.get("id", Long.class);
+        Long userId = this.getUserIdAuthenticate();
         Long restaurantId = employeeRestaurantHandler.getEmployeeRestaurant(userId).getRestaurantId();
         Page<Order> orders = iOrderServicePort.getAllOrders(restaurantId, orderStatus, pageable);
         List<CompleteOrderResponse> modifiedOrderResponses = new ArrayList<>();
@@ -170,14 +175,7 @@ public class OrderHandler implements IOrderHandler{
 
     @Override
     public void saveCompleteOrder (CompleteOrderRequest completeOrderRequest){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String token = (String) authentication.getCredentials();
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        Long userId = claims.get("id", Long.class);
+        Long userId = this.getUserIdAuthenticate();
         if (!this.hasPendingOrders(userId)) {
             Order order = orderRequestMapper.toOrder(completeOrderRequest);
             OrderRequest orderRequest = orderRequestMapper.toOrderRequest(completeOrderRequest);

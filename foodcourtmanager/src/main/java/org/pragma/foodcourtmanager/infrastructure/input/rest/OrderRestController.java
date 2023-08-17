@@ -1,10 +1,7 @@
 package org.pragma.foodcourtmanager.infrastructure.input.rest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.pragma.foodcourtmanager.application.dto.request.CompleteOrderRequest;
-import org.pragma.foodcourtmanager.application.dto.request.DishRequest;
-import org.pragma.foodcourtmanager.application.dto.request.OrderRequest;
-import org.pragma.foodcourtmanager.application.dto.request.OrderUpdateRequest;
+import org.pragma.foodcourtmanager.application.dto.request.*;
 import org.pragma.foodcourtmanager.application.dto.response.CompleteOrderResponse;
 import org.pragma.foodcourtmanager.application.dto.response.OrderResponse;
 import org.pragma.foodcourtmanager.application.dto.response.RestaurantListResponse;
@@ -63,6 +60,13 @@ public class OrderRestController{
     public ResponseEntity<String> orderReady (
             @RequestBody OrderUpdateRequest orderUpdateRequest){
         orderHandler.orderReady(orderUpdateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/delivery-order")
+    public ResponseEntity<String> deliverOrder (
+            @RequestBody OrderValidatePinRequest orderValidatePinRequest){
+        orderHandler.deliverOrder(orderValidatePinRequest);
         return ResponseEntity.noContent().build();
     }
 
