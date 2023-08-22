@@ -6,10 +6,7 @@ import org.pragma.foodcourtmanager.application.dto.response.TraceabilityResponse
 import org.pragma.foodcourtmanager.infrastructure.configuration.FeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,13 +14,13 @@ import java.util.List;
 public interface ITraceabilityFeignClient{
 
     @PostMapping(value = "/traceability/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    String saveTraceability(@RequestBody TraceabilityRequest traceabilityRequest);
+    String saveTraceability(@RequestHeader("Authorization") String token, @RequestBody TraceabilityRequest traceabilityRequest);
 
     @GetMapping(value = "/traceability/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    List<TraceabilityResponse> getTraceability(@PathVariable(name = "customerId") Long customerId);
+    List<TraceabilityResponse> getTraceability(@RequestHeader("Authorization") String token , @PathVariable(name = "customerId") Long customerId);
 
     @GetMapping(value = "/traceability/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    List<TraceabilityResponse> getAllTraceability();
+    List<TraceabilityResponse> getAllTraceability(@RequestHeader("Authorization") String token);
 
 
 }

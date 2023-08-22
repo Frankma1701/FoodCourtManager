@@ -22,7 +22,6 @@ public class SecurityConfiguration{
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
-        //noinspection removal
         httpSecurity.cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -31,6 +30,7 @@ public class SecurityConfiguration{
                         .requestMatchers("/user/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/restaurant/").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/dish/").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.PUT, "/dish/**").hasRole("OWNER")
                         .requestMatchers(HttpMethod.GET, "/dish/").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/order/").hasRole("CUSTOMER")
                         .requestMatchers(HttpMethod.GET , "/order/**").permitAll()
@@ -38,14 +38,9 @@ public class SecurityConfiguration{
                         .requestMatchers(HttpMethod.PUT , "/order/order-ready").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.PUT , "/order/delivery-order").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.PUT , "/order/cancel-order").hasRole("EMPLOYEE")
-
-                        .requestMatchers("/employee-restaurant/**" ).permitAll()
+                        .requestMatchers("/employee-restaurant/**" ).hasRole("OWNER")
                         .requestMatchers("/order/traceability").hasRole("CUSTOMER")
-                        .requestMatchers("/order/time-traceability").permitAll()
-
-
-                        // .requestMatchers("/employee-restaurant/**" ).hasRole("EMPLOYEE")
-
+                        .requestMatchers("/order/time-traceability").hasRole("OWNER")
                         .requestMatchers(HttpMethod.PUT, "/dish/").hasRole("OWNER")
                         .requestMatchers(HttpMethod.GET, "/restaurant/").hasRole("CUSTOMER")
                         .anyRequest().denyAll()

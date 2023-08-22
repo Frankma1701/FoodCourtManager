@@ -64,7 +64,6 @@ public class OrderRestController{
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size){
         orderHandler.assignOrder(orderUpdateRequest);
-        //return ResponseEntity.noContent().build();
         Pageable pageable = PageRequest.of(page, size);
         Page<CompleteOrderResponse> completeOrderResponses = orderHandler.getAllOrders(orderStatus, pageable);
         List<CompleteOrderResponse> result = completeOrderResponses.getContent();

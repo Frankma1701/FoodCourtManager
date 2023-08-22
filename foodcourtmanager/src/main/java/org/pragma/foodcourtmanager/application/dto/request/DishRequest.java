@@ -14,6 +14,5 @@ public class DishRequest{
     private String description;
     private Double price;
     private String imageUrl;
-    private Boolean isActive;
     private String restaurantNit;
 }

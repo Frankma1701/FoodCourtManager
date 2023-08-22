@@ -10,8 +10,9 @@ public class MessageHandler{
 
     private final IMessageFeignClient iMessageFeignClient;
 
-    public String sendMessage (MessageRequest messageRequest){
-        return iMessageFeignClient.sendMessage(messageRequest);
+    public String sendMessage (String token, MessageRequest messageRequest){
+        String tokenFormat = "Bearer " + token;
+        return iMessageFeignClient.sendMessage(tokenFormat, messageRequest);
     }
 
 }

@@ -5,16 +5,13 @@ import org.pragma.foodcourtmanager.application.dto.response.UserResponse;
 import org.pragma.foodcourtmanager.infrastructure.configuration.FeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "MESSAGE-API-FOOD-COURT" , url = "http://localhost:8092" , configuration = FeignConfig.class)
 public interface IMessageFeignClient{
 
     @PostMapping(value = "/message/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    String sendMessage(@RequestBody MessageRequest messageRequest);
+    String sendMessage(@RequestHeader("Authorization") String token, @RequestBody MessageRequest messageRequest);
 
 
 }

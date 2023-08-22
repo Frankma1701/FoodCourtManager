@@ -13,15 +13,20 @@ public class TraceabilityHandler{
 
     private final ITraceabilityFeignClient iTraceabilityFeignClient;
 
-    public void saveTraceability (TraceabilityRequest traceabilityRequest){
-        iTraceabilityFeignClient.saveTraceability(traceabilityRequest);
+    public void saveTraceability (String token ,TraceabilityRequest traceabilityRequest){
+        String tokenFormat = "Bearer " + token;
+
+        iTraceabilityFeignClient.saveTraceability(tokenFormat,traceabilityRequest);
     }
 
-    public List<TraceabilityResponse> getTraceability (Long customerId){
-        return iTraceabilityFeignClient.getTraceability(customerId);
+    public List<TraceabilityResponse> getTraceability (String token,Long customerId){
+        String tokenFormat = "Bearer " + token;
+        return iTraceabilityFeignClient.getTraceability(tokenFormat, customerId);
     }
-    public List<TraceabilityResponse> getAllTraceability (){
-        return iTraceabilityFeignClient.getAllTraceability();
+    public List<TraceabilityResponse> getAllTraceability (String token){
+        String tokenFormat = "Bearer " + token;
+
+        return iTraceabilityFeignClient.getAllTraceability(tokenFormat);
     }
 
 }

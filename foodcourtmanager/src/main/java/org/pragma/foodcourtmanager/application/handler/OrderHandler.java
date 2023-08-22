@@ -63,7 +63,9 @@ public class OrderHandler implements IOrderHandler{
         order.setEmployeeId(userId);
         TraceabilityRequest traceabilityRequest = this.buildTraceability(order,OrderStatus.IN_PREPARATION);
         order.setOrderStatus(OrderStatus.IN_PREPARATION);
-        traceabilityHandler.saveTraceability(traceabilityRequest);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = (String) authentication.getCredentials();
+        traceabilityHandler.saveTraceability(token,traceabilityRequest);
         iOrderServicePort.assignOrder(order);
     }
 
@@ -97,8 +99,10 @@ public class OrderHandler implements IOrderHandler{
             String pin = GeneratorPin.generateSecurityPin(4);
             MessageRequest messageRequest = new MessageRequest(userResponse.getCellPhoneNumber(), "Tu pedido esta listo , puedes reclamarlo con el siguiente código " + pin);
             order.setVerificationCode(pin);
-            traceabilityHandler.saveTraceability(traceabilityRequest);
-            messageHandler.sendMessage(messageRequest);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String token = (String) authentication.getCredentials();
+            traceabilityHandler.saveTraceability(token,traceabilityRequest);
+            messageHandler.sendMessage(token,messageRequest);
             iOrderServicePort.assignOrder(order);
         } else {
             throw new RuntimeException("El empleado no pertenece al resturante y por tanto no puede cambiar el estado del pedido");
@@ -112,7 +116,9 @@ public class OrderHandler implements IOrderHandler{
         if (order.getVerificationCode().equals(orderValidatePinRequest.getPin()) && order.getOrderStatus() == OrderStatus.READY) {
             TraceabilityRequest traceabilityRequest = this.buildTraceability(order,OrderStatus.DELIVERED);
             order.setOrderStatus(OrderStatus.DELIVERED);
-            traceabilityHandler.saveTraceability(traceabilityRequest);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String token = (String) authentication.getCredentials();
+            traceabilityHandler.saveTraceability(token,traceabilityRequest);
             iOrderServicePort.assignOrder(order);
         } else {
             throw new RuntimeException("El pin del pedido es incorrecto y no se puede entregar el mismo o aun no esta listo ");
@@ -133,20 +139,25 @@ public class OrderHandler implements IOrderHandler{
     @Override
     public List<TraceabilityResponse> getTraceability (){
         Long userId = this.getUserIdAuthenticate();
-        return traceabilityHandler.getTraceability(userId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = (String) authentication.getCredentials();
+        return traceabilityHandler.getTraceability(token, userId);
     }
 
     @Override
     public  List<TraceabilityRankingResponse> getRankingEmployeesOrders (){
-        Long userId = 15L;
+        Long userId = this.getUserIdAuthenticate();
         List<TraceabilityRankingResponse> result = new ArrayList<>();
-        List<TraceabilityTimeResponse> listTimeOrders = this.getTimeOrders();
-
-        // Create a map to store total time and count for each employee
+        List<TraceabilityTimeResponse> listTraceability = this.getTimeOrders();
+        List<TraceabilityTimeResponse> listTimeOrders = new ArrayList<>();
+        listTraceability.forEach(traceabilityTimeResponse -> {
+            RestaurantResponse restaurantResponse = restaurantHandler.getRestaurant(traceabilityTimeResponse.getRestaurantId());
+            if(restaurantResponse.getOwnerId() == userId){
+                listTimeOrders.add(traceabilityTimeResponse);
+            }
+        });
         Map<Long, Duration> employeeTotalTimes = new HashMap<>();
         Map<Long, Integer> employeeOrderCounts = new HashMap<>();
-
-        // Calculate total time and count for each employee
         for (TraceabilityTimeResponse entry : listTimeOrders) {
             Long employeeId = entry.getEmployeeId();
             Duration totalOrderTime = parseTotalOrderTime(entry.getTotalOrderTime());
@@ -157,7 +168,6 @@ public class OrderHandler implements IOrderHandler{
             employeeOrderCounts.put(employeeId,
                     employeeOrderCounts.getOrDefault(employeeId, 0) + 1);
         }
-
         for (Map.Entry<Long, Duration> entry : employeeTotalTimes.entrySet()) {
             Long employeeId = entry.getKey();
             Duration totalDuration = entry.getValue();
@@ -173,10 +183,10 @@ public class OrderHandler implements IOrderHandler{
         result.sort(Comparator.comparing(TraceabilityRankingResponse::getAverageTime));
 
         for (int i = 0; i < result.size(); i++) {
-            result.get(i).setRanking("Posición en el ranking : " + (i + 1));
-            UserResponse userResponse = userHandler.getUser(result.get(i).getEmployeeId());
-            result.get(i).setEmployeeFullName(userResponse.getName() + " " + userResponse.getLastName());
-            result.get(i).setDocumentId(userResponse.getDocumentId());
+                result.get(i).setRanking("Posición en el ranking : " + (i + 1));
+                UserResponse userResponse = userHandler.getUser(result.get(i).getEmployeeId());
+                result.get(i).setEmployeeFullName(userResponse.getName() + " " + userResponse.getLastName());
+                result.get(i).setDocumentId(userResponse.getDocumentId());
         }
         return result;
     }
@@ -185,16 +195,16 @@ public class OrderHandler implements IOrderHandler{
 
     @Override
     public List<TraceabilityTimeResponse> getTimeOrders (){
-        Long userId = 15L;
-        List<TraceabilityResponse> traceabilityResponseList = traceabilityHandler.getAllTraceability();
+        Long userId = this.getUserIdAuthenticate();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = (String) authentication.getCredentials();
+        List<TraceabilityResponse> traceabilityResponseList = traceabilityHandler.getAllTraceability(token);
         traceabilityResponseList.sort(Comparator.comparing(TraceabilityResponse::getDate));
         List<TraceabilityTimeResponse> result = new ArrayList<>();
         TraceabilityResponse previous = null;
         for (TraceabilityResponse current : traceabilityResponseList) {
             RestaurantResponse restaurantResponse = restaurantHandler.getRestaurant(current.getRestaurantId());
-
-            System.out.println("El restaurant' " + restaurantResponse.toString());
-            if (  previous != null
+            if (restaurantResponse.getOwnerId() ==userId &&  previous != null
                     && previous.getOrderId().equals(current.getOrderId())) {
                 long timeElapsedMillis = ChronoUnit.MILLIS.between(previous.getDate(), current.getDate());
                 Duration duration = Duration.ofMillis(timeElapsedMillis);
@@ -211,7 +221,8 @@ public class OrderHandler implements IOrderHandler{
                         outputFormatter.format(current.getDate()),
                         previous.getEmployeeId(),
                         previous.getEmployeeEmail(),
-                        formattedDuration));
+                        formattedDuration,
+                        previous.getRestaurantId()));
             }
             previous = current;
         }

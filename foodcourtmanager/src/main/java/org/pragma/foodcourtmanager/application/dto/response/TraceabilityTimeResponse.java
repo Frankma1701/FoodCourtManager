@@ -21,6 +21,7 @@ public class TraceabilityTimeResponse{
     private Long employeeId;
     private String employeeEmail;
     private String totalOrderTime;
+    private Long restaurantId;
 }
 
 
