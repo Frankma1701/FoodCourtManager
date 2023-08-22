@@ -10,13 +10,10 @@ import org.pragma.foodcourtmanager.application.mapper.request.RestaurantRequestM
 import org.pragma.foodcourtmanager.application.mapper.response.RestaurantResponseMapper;
 import org.pragma.foodcourtmanager.domain.api.IRestaurantServicePort;
 import org.pragma.foodcourtmanager.domain.model.Restaurant;
-import org.pragma.foodcourtmanager.infrastructure.exception.NotOwnerUserException;
-import org.pragma.foodcourtmanager.infrastructure.exception.RestaurantAlreadyExistException;
+import org.pragma.foodcourtmanager.application.exception.NotOwnerUserException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

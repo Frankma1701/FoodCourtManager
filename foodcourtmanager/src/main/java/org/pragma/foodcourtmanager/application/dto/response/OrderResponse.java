@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.pragma.foodcourtmanager.domain.model.OrderStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ public class OrderResponse{
 
     private Long id;
     private Long customerId;
-    private LocalDate date;
+    private LocalDateTime date;
     private OrderStatus orderStatus;
     private Long employeeId;
     private Long restaurantId;

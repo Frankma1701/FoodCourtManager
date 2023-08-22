@@ -3,16 +3,14 @@ package org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter;
 import lombok.RequiredArgsConstructor;
 import org.pragma.foodcourtmanager.domain.model.Restaurant;
 import org.pragma.foodcourtmanager.domain.spi.IRestaurantPersistencePort;
-import org.pragma.foodcourtmanager.infrastructure.exception.NoDataFoundException;
-import org.pragma.foodcourtmanager.infrastructure.exception.RestaurantAlreadyExistException;
-import org.pragma.foodcourtmanager.infrastructure.exception.RestaurantNotFoundException;
+import org.pragma.foodcourtmanager.application.exception.NoDataFoundException;
+import org.pragma.foodcourtmanager.application.exception.RestaurantAlreadyExistException;
+import org.pragma.foodcourtmanager.application.exception.RestaurantNotFoundException;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.RestaurantEntity;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.RestaurantEntityMapper;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IRestaurantRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 public class RestaurantJpaAdapter implements IRestaurantPersistencePort{

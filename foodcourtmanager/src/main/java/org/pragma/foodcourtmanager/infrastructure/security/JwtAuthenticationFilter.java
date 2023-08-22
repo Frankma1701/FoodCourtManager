@@ -1,4 +1,4 @@
-package org.pragma.foodcourtmanager.application.security;
+package org.pragma.foodcourtmanager.infrastructure.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

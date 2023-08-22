@@ -4,15 +4,19 @@ import org.pragma.foodcourtmanager.application.dto.response.UserResponse;
 import org.pragma.foodcourtmanager.infrastructure.configuration.FeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "USER-API-FOOD-COURT" , url = "http://localhost:8090" , configuration = FeignConfig.class)
+@FeignClient(name = "USER-API-FOOD-COURT", url = "http://localhost:8090", configuration = FeignConfig.class)
 public interface IUserFeignClient{
 
     @GetMapping(value = "/user/{documentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    UserResponse getUser(@PathVariable("documentId") String documentId);
+    UserResponse getUser (@PathVariable("documentId") String documentId);
 
     @GetMapping(value = "/user/find/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    UserResponse getUserById(@PathVariable("id") Long id);
+    UserResponse getUserById (@PathVariable("id") Long id);
+
 }

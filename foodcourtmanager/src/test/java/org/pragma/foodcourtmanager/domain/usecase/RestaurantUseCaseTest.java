@@ -73,6 +73,15 @@ class RestaurantUseCaseTest{
     }
 
     @Test
+    void getRestaurantById (){
+        when(iRestaurantPersistencePort.getRestaurant(1L)).thenReturn(mockObject);
+        Restaurant resultObject = restaurantUseCase.getRestaurant(1L);
+        Assertions.assertEquals(expectedObject.getId(),resultObject.getId(), "Los ids de los restaurantes son iguales");
+        Assertions.assertEquals(expectedObject.getName(),resultObject.getName(), "Los nombres de los restaurantes son iguales");
+        verify(iRestaurantPersistencePort).getRestaurant(1L);
+    }
+
+    @Test
     void updateRestaurant (){
         restaurantUseCase.updateRestaurant(expectedUpdateObject);
         verify(iRestaurantPersistencePort).updateRestaurant(expectedUpdateObject);

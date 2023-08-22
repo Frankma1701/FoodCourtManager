@@ -37,12 +37,5 @@ public class OrderDish {
         this.quantity = quantity;
     }
 
-    @Override
-    public String toString (){
-        return "OrderDish{" +
-                "orderId=" + orderId +
-                ", dishId=" + dishId +
-                ", quantity=" + quantity +
-                '}';
-    }
+
 }

@@ -1,15 +1,12 @@
 package org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.pragma.foodcourtmanager.domain.model.Order;
 import org.pragma.foodcourtmanager.domain.model.OrderDish;
 import org.pragma.foodcourtmanager.domain.spi.IOrderDishPersistencePort;
-import org.pragma.foodcourtmanager.infrastructure.exception.NoDataFoundException;
+import org.pragma.foodcourtmanager.application.exception.NoDataFoundException;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.OrderDishEntity;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.RestaurantEntity;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.OrderDishEntityMapper;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IOrderDishRepository;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

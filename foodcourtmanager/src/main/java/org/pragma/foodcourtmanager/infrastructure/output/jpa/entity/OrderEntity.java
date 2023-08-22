@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.pragma.foodcourtmanager.domain.model.OrderStatus;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class OrderEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long customerId;
-    private LocalDate date;
+    private LocalDateTime date;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @Column(columnDefinition = "bigint default 0")

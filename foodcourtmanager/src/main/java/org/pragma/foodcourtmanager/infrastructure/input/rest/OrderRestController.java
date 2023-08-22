@@ -2,9 +2,7 @@ package org.pragma.foodcourtmanager.infrastructure.input.rest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.pragma.foodcourtmanager.application.dto.request.*;
-import org.pragma.foodcourtmanager.application.dto.response.CompleteOrderResponse;
-import org.pragma.foodcourtmanager.application.dto.response.OrderResponse;
-import org.pragma.foodcourtmanager.application.dto.response.RestaurantListResponse;
+import org.pragma.foodcourtmanager.application.dto.response.*;
 import org.pragma.foodcourtmanager.application.handler.OrderHandler;
 import org.pragma.foodcourtmanager.domain.model.OrderStatus;
 import org.springframework.data.domain.Page;
@@ -41,6 +39,24 @@ public class OrderRestController{
         return ResponseEntity.ok(result);
     }
 
+   @GetMapping("/traceability")
+    public ResponseEntity<List<TraceabilityResponse>> getTraceability (){
+        List<TraceabilityResponse> result = orderHandler.getTraceability();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/time-traceability")
+    public ResponseEntity<List<TraceabilityTimeResponse>> getTimeOrders (){
+        List<TraceabilityTimeResponse> result = orderHandler.getTimeOrders();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/ranking-employee")
+    public ResponseEntity<List<TraceabilityRankingResponse>> getRankingEmployeesOrders (){
+        List<TraceabilityRankingResponse> result = orderHandler.getRankingEmployeesOrders();
+        return ResponseEntity.ok(result);
+    }
+
     @PutMapping("/")
     public ResponseEntity<List<CompleteOrderResponse>> assignOrder (
             @RequestBody OrderUpdateRequest orderUpdateRequest,
@@ -55,6 +71,8 @@ public class OrderRestController{
 
         return ResponseEntity.ok(result);
     }
+
+
 
     @PutMapping("/order-ready")
     public ResponseEntity<String> orderReady (

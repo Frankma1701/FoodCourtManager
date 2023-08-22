@@ -1,19 +1,15 @@
 package org.pragma.foodcourtmanager.infrastructure.output.jpa.adapter;
 
 import lombok.RequiredArgsConstructor;
+import org.pragma.foodcourtmanager.application.exception.DishNotFoundException;
+import org.pragma.foodcourtmanager.application.exception.NoDataFoundException;
 import org.pragma.foodcourtmanager.domain.model.Dish;
-import org.pragma.foodcourtmanager.domain.model.Restaurant;
 import org.pragma.foodcourtmanager.domain.spi.IDishPersistencePort;
-import org.pragma.foodcourtmanager.infrastructure.exception.*;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.DishEntity;
-import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.RestaurantEntity;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.DishEntityMapper;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.repository.IDishRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort{

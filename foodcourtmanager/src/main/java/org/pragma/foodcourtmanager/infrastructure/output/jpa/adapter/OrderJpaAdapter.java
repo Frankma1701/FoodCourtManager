@@ -5,7 +5,7 @@ import org.pragma.foodcourtmanager.domain.model.Order;
 import org.pragma.foodcourtmanager.domain.model.OrderDish;
 import org.pragma.foodcourtmanager.domain.model.OrderStatus;
 import org.pragma.foodcourtmanager.domain.spi.IOrderPersistencePort;
-import org.pragma.foodcourtmanager.infrastructure.exception.NoDataOrderFoundException;
+import org.pragma.foodcourtmanager.application.exception.NoDataOrderFoundException;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.entity.OrderEntity;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.OrderDishEntityMapper;
 import org.pragma.foodcourtmanager.infrastructure.output.jpa.mapper.OrderEntityMapper;
@@ -88,4 +88,6 @@ public class OrderJpaAdapter implements IOrderPersistencePort{
             throw new NoDataOrderFoundException();
         }
         return orderEntityMapper.toOrderPage(orderEntityPage);    }
+
+
 }

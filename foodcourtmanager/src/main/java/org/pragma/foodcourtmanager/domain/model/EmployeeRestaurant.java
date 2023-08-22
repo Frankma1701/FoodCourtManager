@@ -26,12 +26,4 @@ public class EmployeeRestaurant{
         this.restaurantId = restaurantId;
     }
 
-    @Override
-    public String toString (){
-        return "EmployeeRestaurant{" +
-                "employeeId=" + employeeId +
-                ", restaurantId=" + restaurantId +
-                '}';
-    }
-
 }

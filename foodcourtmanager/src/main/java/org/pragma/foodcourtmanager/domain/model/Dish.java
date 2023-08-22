@@ -87,17 +87,4 @@ public class Dish {
         isActive = active;
     }
 
-    @Override
-    public String toString (){
-        return "Dish{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", categoryId=" + categoryId +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", isActive=" + isActive +
-                ", restaurantId=" + restaurantId +
-                '}';
-    }
 }

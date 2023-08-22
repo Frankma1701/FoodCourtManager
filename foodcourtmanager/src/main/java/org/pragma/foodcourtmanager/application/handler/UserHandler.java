@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserHandler{
+public class UserHandler implements IUserHandler{
 
     private final IUserFeignClient iUserFeignClient;
 
@@ -16,4 +16,5 @@ public class UserHandler{
     public UserResponse getUser (Long id){
         return iUserFeignClient.getUserById(id);
     }
+
 }

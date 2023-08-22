@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost/food_court_manager?serverTimezone=UTC
+    url: jdbc:mysql://localhost/food_court_manager?serverTimezone=America/Bogota
     username: root
     password: root
 

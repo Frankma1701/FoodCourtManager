@@ -76,16 +76,5 @@ public class Restaurant{
         this.nit = nit;
     }
 
-    @Override
-    public String toString (){
-        return "Restaurant{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", ownerId=" + ownerId +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", logoUrl='" + logoUrl + '\'' +
-                ", nit='" + nit + '\'' +
-                '}';
-    }
+
 }

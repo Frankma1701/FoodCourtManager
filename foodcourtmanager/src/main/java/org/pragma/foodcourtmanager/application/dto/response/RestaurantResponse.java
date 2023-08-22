@@ -15,4 +15,16 @@ public class RestaurantResponse{
     private String logoUrl;
     private String nit;
 
+    @Override
+    public String toString (){
+        return "RestaurantResponse{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", ownerId=" + ownerId +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", logoUrl='" + logoUrl + '\'' +
+                ", nit='" + nit + '\'' +
+                '}';
+    }
 }

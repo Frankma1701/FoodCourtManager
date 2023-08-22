@@ -1,4 +1,4 @@
-package org.pragma.foodcourtmanager.infrastructure.exception;
+package org.pragma.foodcourtmanager.application.exception;
 
 public class NoEmployeeRestaurantFoundException extends RuntimeException{
 

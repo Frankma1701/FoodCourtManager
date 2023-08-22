@@ -1,19 +1,20 @@
 package org.pragma.foodcourtmanager.domain.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Order {
 
     private Long id;
     private Long customerId;
-    private LocalDate date;
+    private LocalDateTime date;
     private OrderStatus orderStatus;
     private Long employeeId;
     private Long restaurantId;
 
     private String verificationCode;
 
-    public Order (Long id, Long customerId, LocalDate date, OrderStatus orderStatus, Long employeeId, Long restaurantId, String verificationCode){
+    public Order (Long id, Long customerId, LocalDateTime date, OrderStatus orderStatus, Long employeeId, Long restaurantId, String verificationCode){
         this.id = id;
         this.customerId = customerId;
         this.date = date;
@@ -39,11 +40,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public LocalDate getDate (){
+    public LocalDateTime getDate (){
         return date;
     }
 
-    public void setDate (LocalDate date){
+    public void setDate (LocalDateTime date){
         this.date = date;
     }
 
@@ -79,16 +80,4 @@ public class Order {
         this.verificationCode = verificationCode;
     }
 
-    @Override
-    public String toString (){
-        return "Order{" +
-                "id=" + id +
-                ", customerId=" + customerId +
-                ", date=" + date +
-                ", orderStatus=" + orderStatus +
-                ", employeeId=" + employeeId +
-                ", restaurantId=" + restaurantId +
-                ", verificationCode='" + verificationCode + '\'' +
-                '}';
-    }
 }

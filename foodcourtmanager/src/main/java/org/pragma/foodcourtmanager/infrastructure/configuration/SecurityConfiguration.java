@@ -1,7 +1,7 @@
 package org.pragma.foodcourtmanager.infrastructure.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.pragma.foodcourtmanager.application.security.JwtAuthenticationFilter;
+import org.pragma.foodcourtmanager.infrastructure.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -40,6 +40,9 @@ public class SecurityConfiguration{
                         .requestMatchers(HttpMethod.PUT , "/order/cancel-order").hasRole("EMPLOYEE")
 
                         .requestMatchers("/employee-restaurant/**" ).permitAll()
+                        .requestMatchers("/order/traceability").hasRole("CUSTOMER")
+                        .requestMatchers("/order/time-traceability").permitAll()
+
 
                         // .requestMatchers("/employee-restaurant/**" ).hasRole("EMPLOYEE")
 
